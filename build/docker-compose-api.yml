@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  api_asterix:
+    build:
+      context: ..
+      dockerfile: build/Dockerfile.api
+    depends_on:
+      - postgres
+    environment:
+      - ASTERIX_DATABASE_URL=psql://asterix:asterix@postgres:5432/asterix
+    ports:
+      - "8000:8000"
+  postgres:
+    image: postgres:latest
+    volumes:
+      - "asterix-pgdata:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_DB=asterix
+      - POSTGRES_USER=asterix
+      - POSTGRES_PASSWORD=asterix
+    ports:
+      - "5432:5432"
+  # redis:
+  #   image: redis:latest
+  # elastic:
+  #   image: elasticsearch:7.2.0
+  #   volumes:
+  #     - "asterix-elasticdata:/usr/share/elasticsearch/data"
+  #   environment:
+  #     - discovery.type=single-node
+  #   ports:
+  #     - "9200:9200"
+  #     - "9300:9200"
+
+volumes:
+  asterix-pgdata:
+  asterix-elasticdata:
