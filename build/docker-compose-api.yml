@@ -14,7 +14,7 @@ services:
   postgres:
     image: postgres:latest
     volumes:
-      - "asterix-pgdata:/var/lib/postgresql/data"
+      - "asterix-pgdata:/var/lib/postgis/data"
     environment:
       - POSTGRES_DB=asterix
       - POSTGRES_USER=asterix

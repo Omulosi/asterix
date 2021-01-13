@@ -1,16 +1,27 @@
 version: '3'
 
 services:
-  postgres:
-    image: postgres:latest
+  postgis:
+    image: kartoza/postgis
     volumes:
-      - "asterix-pgdata:/var/lib/postgresql/data"
+      - "asterix-pgdata:/var/lib/postgis/data"
     environment:
       - POSTGRES_DB=asterix
       - POSTGRES_USER=asterix
       - POSTGRES_PASSWORD=asterix
     ports:
       - "5432:5432"
+
+  # postgres:
+  #   image: postgres:latest
+  #   volumes:
+  #     - "asterix-pgdata:/var/lib/postgresql/data"
+  #   environment:
+  #     - POSTGRES_DB=asterix
+  #     - POSTGRES_USER=asterix
+  #     - POSTGRES_PASSWORD=asterix
+  #   ports:
+  #     - "5432:5432"
   # redis:
   #   image: redis:latest
   # elastic:

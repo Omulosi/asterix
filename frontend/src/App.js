@@ -1,6 +1,5 @@
 import './App.css';
-import L from 'leaflet';
-import { Map, MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
 
 function App() {
