@@ -1,7 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer} from 'react-leaflet';
+import { Map, TileLayer } from 'react-leaflet';
+import L from 'leaflet';
 import axios from 'axios';
 import LocationMarkers from './LocationMarkers';
+import EditControlComponent from './EditControlComponent';
+import { GeneralIcon, ShadowIcon, LocationIcon } from './Icons';
+import generalIconPng from '../assets/general_icon.svg';
+import shadowIconPng from '../assets/marker-shadow.png';
+
+// work around broken icons when using webpack, see https://github.com/PaulLeCam/react-leaflet/issues/255
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: generalIconPng,
+  iconUrl: generalIconPng,
+  shadowUrl: shadowIconPng,
+  iconSize: [50, 50]
+});
 
 
 const MARKERS_LIST_API = 'http://localhost:8000/api/v1/markers';
@@ -22,7 +36,7 @@ const MapView = (props) => {
     }, [])
 
     return (
-        <MapContainer
+        <Map
             className="map"
             center={position}
             zoom={10}>
@@ -31,7 +45,8 @@ const MapView = (props) => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <LocationMarkers locations={features} />
-        </MapContainer>
+            <EditControlComponent />
+        </Map>
     )
 
 }

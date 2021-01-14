@@ -12,6 +12,12 @@ code {
     monospace;
 }
 
+/* Map styles for react leaflet */
 .map {
   height: 100vh;
+}
+
+/* React leaflet draw styles */
+.sr-only {
+  display: none;
 }
