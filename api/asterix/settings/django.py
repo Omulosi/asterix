@@ -43,17 +43,22 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.gis",
     # 3rd party apps
     "rest_framework",
-    "drf-yasg",
-    # our apps
+    "rest_framework_gis",
+    "corsheaders",
+    # "drf-yasg",
+    # local apps
     "asterix.apps.common.apps.CommonConfig",
     "asterix.apps.account.apps.AccountConfig",
+    "asterix.apps.markers.apps.MarkersConfig",
 ] + env.list("ASTERIX_DEV_INSTALLED_APPS", default=[])
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -86,6 +91,13 @@ WSGI_APPLICATION = "asterix.wsgi.application"
 # https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/#databases
 
 DATABASES = {"default": env.db("ASTERIX_DATABASE_URL")}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 
 
 # Password validation
@@ -128,3 +140,15 @@ STATICFILES_DIRS = (rel("static/"),)
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = rel("media/")
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    )
+}
+
+
+CORS_ORIGIN_WHITELIST = (
+'http://localhost:3000',
+'http://localhost:8000',
+)
