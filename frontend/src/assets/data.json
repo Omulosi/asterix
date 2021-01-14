@@ -1,0 +1,46 @@
+
+const data = {
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "id": 1,
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.308889970195843,
+                    36.81149482214762
+                ]
+            },
+            "bbox": [
+                -1.308889970195843,
+                36.81149482214762,
+                -1.308889970195843,
+                36.81149482214762
+            ],
+            "properties": {
+                "name": "siwaka estate"
+            }
+        },
+        {
+            "id": 2,
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.272592801877131,
+                    36.86084746801358
+                ]
+            },
+            "bbox": [
+                -1.2725928018771306,
+                36.86084746801358,
+                -1.2725928018771306,
+                36.86084746801358
+            ],
+            "properties": {
+                "name": "easich"
+            }
+        }
+    ]
+}
