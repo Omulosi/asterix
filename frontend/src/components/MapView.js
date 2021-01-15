@@ -18,7 +18,7 @@ L.Icon.Default.mergeOptions({
 });
 
 
-const MARKERS_LIST_API = 'http://localhost:8000/api/v1/markers';
+const MARKERS_LIST_API = 'http://localhost:8000/api/v1/markers/';
 
 const MapView = (props) => {
 
@@ -35,6 +35,19 @@ const MapView = (props) => {
         })
     }, [])
 
+    const onChange = (data) => {
+        console.log("GeoJson data => " + data.features);
+        if (data) {
+            axios.post(MARKERS_LIST_API, data)
+            .then(res => {
+                console.log(res);
+
+            }).catch(err => {
+                console.log(err);
+            })
+        }
+    }
+
     return (
         <Map
             className="map"
@@ -45,7 +58,7 @@ const MapView = (props) => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <LocationMarkers locations={features} />
-            <EditControlComponent />
+            <EditControlComponent onChange={onChange} features={features}/>
         </Map>
     )
 

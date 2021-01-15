@@ -1,6 +1,7 @@
 import React , { Component} from 'react';
 import { FeatureGroup } from 'react-leaflet';
 import { EditControl } from "react-leaflet-draw";
+import L from 'leaflet';
 
 export default class EditControlComponent extends Component {
 
@@ -65,7 +66,7 @@ export default class EditControlComponent extends Component {
   
     render() {
       return (
-          <FeatureGroup>
+          <FeatureGroup ref={ (reactFGref) => {this._onFeatureGroupReady(reactFGref);} }>
               <EditControl
                 position='topright'
                 onEdited={this._onEdited}
@@ -76,9 +77,7 @@ export default class EditControlComponent extends Component {
                 onEditStop={this._onEditStop}
                 onDeleteStart={this._onDeleteStart}
                 onDeleteStop={this._onDeleteStop}
-                draw={{
-                  rectangle: false
-                }}
+                
               />
           </FeatureGroup>
       );
@@ -86,21 +85,28 @@ export default class EditControlComponent extends Component {
   
     _editableFG = null
   
-    // _onFeatureGroupReady = (reactFGref) => {
+    _onFeatureGroupReady = (reactFGref) => {
+
+      const { features } = this.props;
   
-    //   // populate the leaflet FeatureGroup with the geoJson layers
+      // populate the leaflet FeatureGroup with the geoJson layers
   
-    //   let leafletGeoJSON = new L.GeoJSON(getGeoJson());
-    //   let leafletFG = reactFGref.leafletElement;
+      let leafletGeoJSON = new L.GeoJSON(features);
+      try {
+        let leafletFG = reactFGref.leafletElement;
   
-    //   leafletGeoJSON.eachLayer( (layer) => {
-    //     leafletFG.addLayer(layer);
-    //   });
+        leafletGeoJSON.eachLayer( (layer) => {
+          leafletFG.addLayer(layer);
+        });
+      } catch (err)  {
+        console.log(err);
+      }
+
   
-    //   // store the ref for future access to content
+      // store the ref for future access to content
   
-    //   this._editableFG = reactFGref;
-    // }
+      this._editableFG = reactFGref;
+    }
   
     _onChange = () => {
   
