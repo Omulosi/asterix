@@ -17,12 +17,14 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include, re_path
 
-
 urlpatterns = [
+    # Admin
     path("admin/", admin.site.urls),
-    #  path('doc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    re_path(r'api/(?P<version>[v1|v2]+)/', include('asterix.apps.markers.rest_api.urls')),
-    ]
+    re_path(
+        r"api/(?P<version>[v1|v2]+)/", include("asterix.apps.markers.rest_api.urls")
+    ),
+    re_path(r"api/(?P<version>[v1|v2]+)/", include("asterix.apps.account.urls")),
+]
 
 
 # enable serve static by django for local development

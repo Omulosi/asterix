@@ -1,8 +1,9 @@
-from django.urls import path
+from rest_framework.routers import DefaultRouter
 
 from .views import marker_views
 
-urlpatterns = [
-    path('markers/', marker_views.MarkerList.as_view(),
-         name='api-marker-list'),
-]
+
+router = DefaultRouter()
+router.register('markers', marker_views.MarkerViewSet, basename="markers")
+
+urlpatterns = router.urls

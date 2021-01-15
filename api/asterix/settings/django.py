@@ -48,11 +48,14 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_gis",
     "corsheaders",
+    "django_filters",
+    "workers",
     # "drf-yasg",
     # local apps
     "asterix.apps.common.apps.CommonConfig",
     "asterix.apps.account.apps.AccountConfig",
     "asterix.apps.markers.apps.MarkersConfig",
+    "asterix.apps.mail.apps.MailConfig",
 ] + env.list("ASTERIX_DEV_INSTALLED_APPS", default=[])
 
 MIDDLEWARE = [
@@ -91,13 +94,6 @@ WSGI_APPLICATION = "asterix.wsgi.application"
 # https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/#databases
 
 DATABASES = {"default": env.db("ASTERIX_DATABASE_URL")}
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 
 
 # Password validation
@@ -106,7 +102,9 @@ DATABASES = {"default": env.db("ASTERIX_DATABASE_URL")}
 AUTH_USER_MODEL = "account.User"
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -141,14 +139,50 @@ STATICFILES_DIRS = (rel("static/"),)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = rel("media/")
 
+CORS_ORIGIN_WHITELIST = ("http://localhost:3000", "http://localhost:8000")
+CORS_ORIGIN_ALLOW_ALL = True
+
+WORKERS_SLEEP = 1
+WORKERS_PURGE = 1000
+
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny',
-    )
+    "DEFAULT_RENDERER_CLASSES": (
+        "djangorestframework_camel_case.render.CamelCaseJSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ),
+    "DEFAULT_PARSER_CLASSES": (
+        "djangorestframework_camel_case.parser.CamelCaseJSONParser",
+    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 25,
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.OrderingFilter",
+        "rest_framework.filters.SearchFilter",
+    ),
+    "EXCEPTION_HANDLER": "asterix.apps.libs.exception_handler.exception_handler",
 }
 
+# MAIL
+SEND_MAIL = env.str("SEND_MAIL") == "True"
+EMAIL_PROVIDER = os.environ.get("EMAIL_PROVIDER", "smtp")  # 'smtp' or 'sendgrid'
 
-CORS_ORIGIN_WHITELIST = (
-'http://localhost:3000',
-'http://localhost:8000',
-)
+WEB_URL = env.str("WEB_URL")
+RESET_PASSWORD_URL = "{}{}".format(WEB_URL, "/reset-password/{reset_token}/{user_id}")
+DEFAULT_FROM_EMAIL = "asterix@no-reply.org"
+DEFAULT_FROM_NAME = "The Asterix Team"
+
+if EMAIL_PROVIDER == "smtp":
+    EMAIL_HOST = env.str("SMTP_SERVER")
+    EMAIL_HOST_USER = env.str("SMTP_LOGIN")
+    EMAIL_HOST_PASSWORD = env.str("SMTP_PASSWORD")
+    EMAIL_PORT = env.str("SMTP_PORT", 587)
+    EMAIL_USE_TLS = True
+
+SENDGRID_API_KEY = env.str("SENDGRID_API_KEY")
+SENDGRID_URL = "https://api.sendgrid.com/v3/mail/send"

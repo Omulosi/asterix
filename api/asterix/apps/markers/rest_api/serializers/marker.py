@@ -3,7 +3,6 @@ from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 from asterix.apps.markers.models.marker import Marker
 
-
 class MarkerSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = Marker

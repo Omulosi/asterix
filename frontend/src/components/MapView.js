@@ -4,7 +4,6 @@ import L from 'leaflet';
 import axios from 'axios';
 import LocationMarkers from './LocationMarkers';
 import EditControlComponent from './EditControlComponent';
-import { GeneralIcon, ShadowIcon, LocationIcon } from './Icons';
 import generalIconPng from '../assets/general_icon.svg';
 import shadowIconPng from '../assets/marker-shadow.png';
 
