@@ -7,12 +7,12 @@ urlpatterns = [
     path("users", views.UserList.as_view(), name="user_list"),
     path("auth/signup", views.UserCreate.as_view(), name="signup"),
     path("auth/login", views.UserLogin.as_view(), name="login"),
-    path(
-        "auth/forgot-password",
-        views.UserForgotPassword.as_view(),
-        name="forgot_password",
-    ),
-    path(
-        "auth/reset-password", views.UserResetPassword.as_view(), name="reset_password"
-    ),
+    # path(
+    # "auth/forgot-password",
+    # views.UserForgotPassword.as_view(),
+    # name="forgot_password",
+    # ),
+    # path(
+    # "auth/reset-password", views.UserResetPassword.as_view(), name="reset_password"
+    # ),
 ]

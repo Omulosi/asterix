@@ -7,8 +7,8 @@ from rest_framework.response import Response
 from .serializers import (
     UserSerializer,
     CustomAuthTokenSerializer,
-    ForgotPasswordSerializer,
-    ResetPasswordSerializer,
+    # ForgotPasswordSerializer,
+    # ResetPasswordSerializer,
 )
 
 
@@ -22,13 +22,16 @@ class Me(generics.RetrieveUpdateAPIView):
 
 class UserCreate(generics.CreateAPIView):
     serializer_class = UserSerializer
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.AllowAny, )
 
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
-        token = Token.objects.create(user_id=response.data["id"])
+        token = Token.objects.create(user_id=response.data["pk"])
         return Response(
-            {"token": token.key, "userId": token.user_id},
+            {
+                "token": token.key,
+                "userId": token.user_id
+            },
             status=status.HTTP_201_CREATED,
         )
 
@@ -36,7 +39,7 @@ class UserCreate(generics.CreateAPIView):
 class UserList(generics.ListAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (permissions.IsAdminUser, )
 
 
 class UserLogin(ObtainAuthToken):
@@ -48,11 +51,10 @@ class UserLogin(ObtainAuthToken):
         return Response({"token": token.key, "userId": token.user_id})
 
 
-class UserForgotPassword(generics.CreateAPIView):
-    serializer_class = ForgotPasswordSerializer
-    permission_classes = (permissions.AllowAny,)
+# class UserForgotPassword(generics.CreateAPIView):
+# serializer_class = ForgotPasswordSerializer
+# permission_classes = (permissions.AllowAny, )
 
-
-class UserResetPassword(generics.CreateAPIView):
-    serializer_class = ResetPasswordSerializer
-    permission_classes = (permissions.AllowAny,)
+# class UserResetPassword(generics.CreateAPIView):
+# serializer_class = ResetPasswordSerializer
+# permission_classes = (permissions.AllowAny, )

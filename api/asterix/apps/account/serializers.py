@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.exceptions import ParseError
 
-from .mail import send_welcome_mail, send_reset_password_email
+# from .mail import send_welcome_mail, send_reset_password_email
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -12,23 +12,23 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ("pk", "first_name", "last_name", "email", "password", "is_admin")
+        fields = ("pk", "first_name", "last_name", "email", "password",
+                  "is_admin")
         extra_kwargs = {"password": {"write_only": True}}
 
     def get_is_admin(self, obj):
-        return obj.is_staff
+        return obj.is_admin
 
     def validate_email(self, value):
         norm_email = value.lower()
         if get_user_model().objects.filter(email=norm_email).exists():
             raise serializers.ValidationError(
-                "user with this email address already exists."
-            )
+                "user with this email address already exists.")
         return norm_email
 
     def create(self, validated_data):
         user = get_user_model().objects.create_user(**validated_data)
-        send_welcome_mail(user)
+        # send_welcome_mail(user)
         return user
 
     def update(self, obj, validated_data):
@@ -45,9 +45,9 @@ class CustomAuthTokenSerializer(serializers.Serializer):
     """
 
     email = serializers.CharField(label=_("Email"))
-    password = serializers.CharField(
-        label=_("Password"), style={"input_type": "password"}, trim_whitespace=False
-    )
+    password = serializers.CharField(label=_("Password"),
+                                     style={"input_type": "password"},
+                                     trim_whitespace=False)
 
     def validate(self, attrs):
         email = attrs.get("email")
@@ -74,36 +74,35 @@ class CustomAuthTokenSerializer(serializers.Serializer):
         return attrs
 
 
-class ForgotPasswordSerializer(serializers.Serializer):
-    email = serializers.EmailField(write_only=True)
+# class ForgotPasswordSerializer(serializers.Serializer):
+# email = serializers.EmailField(write_only=True)
 
-    def create(self, validated_data):
-        email = validated_data["email"].lower()
-        try:
-            user = get_user_model().objects.get(email=email)
-        except get_user_model().DoesNotExist:
-            return {}
+# def create(self, validated_data):
+# email = validated_data["email"].lower()
+# try:
+# user = get_user_model().objects.get(email=email)
+# except get_user_model().DoesNotExist:
+# return {}
 
-        reset_token = default_token_generator.make_token(user)
-        send_reset_password_email(user, reset_token=reset_token)
+# reset_token = default_token_generator.make_token(user)
+# send_reset_password_email(user, reset_token=reset_token)
 
-        return {}
+# return {}
 
+# class ResetPasswordSerializer(serializers.Serializer):
+# token = serializers.CharField(write_only=True)
+# user_id = serializers.IntegerField(write_only=True)
+# password = serializers.CharField(write_only=True)
 
-class ResetPasswordSerializer(serializers.Serializer):
-    token = serializers.CharField(write_only=True)
-    user_id = serializers.IntegerField(write_only=True)
-    password = serializers.CharField(write_only=True)
+# def create(self, validated_data):
+# token = validated_data["token"]
+# user_id = validated_data["user_id"]
+# password = validated_data["password"]
 
-    def create(self, validated_data):
-        token = validated_data["token"]
-        user_id = validated_data["user_id"]
-        password = validated_data["password"]
+# user = get_user_model().objects.get(id=user_id)
+# if not default_token_generator.check_token(user, token):
+# raise ParseError(detail="Invalid token")
 
-        user = get_user_model().objects.get(id=user_id)
-        if not default_token_generator.check_token(user, token):
-            raise ParseError(detail="Invalid token")
-
-        user.set_password(password)
-        user.save()
-        return {}
+# user.set_password(password)
+# user.save()
+# return {}

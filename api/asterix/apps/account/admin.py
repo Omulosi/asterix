@@ -8,25 +8,32 @@ from . import models
 @admin.register(models.User)
 class UserAdmin(DjangoUserAdmin):
     fieldsets = (
-        (None, {"fields": ("password",)}),
-        (_("Personal info"), {"fields": ("first_name", "last_name", "email")}),
+        (None, {
+            "fields": ("password", )
+        }),
+        (_("Personal info"), {
+            "fields": ("first_name", "last_name", "email")
+        }),
         (
             _("Permissions"),
             {
                 "fields": (
                     "is_active",
-                    "is_staff",
+                    "is_admin",
                     "is_superuser",
                     "groups",
                     "user_permissions",
                 )
             },
         ),
-        (_("Important dates"), {"fields": ("last_login", "date_joined")}),
+        (_("Important dates"), {
+            "fields": ("last_login", "date_joined")
+        }),
     )
-    add_fieldsets = (
-        (None, {"classes": ("wide",), "fields": ("email", "password1", "password2")}),
-    )
-    list_display = ("email", "first_name", "last_name", "is_staff")
+    add_fieldsets = ((None, {
+        "classes": ("wide", ),
+        "fields": ("email", "password1", "password2")
+    }), )
+    list_display = ("email", "first_name", "last_name", "is_admin")
     search_fields = ("first_name", "last_name", "email")
-    ordering = ("email",)
+    ordering = ("email", )
