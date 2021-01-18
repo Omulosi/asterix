@@ -16,9 +16,9 @@ class MarkerAdmin(admin.OSMGeoAdmin):
 
 
 class CountyAdmin(LeafletGeoAdmin):
-    list_display = ('name', 'city_code')
-    search_fields = ('name', )
-    filter_fields = ('name', 'city_code')
+    list_display = ('counties', 'cty_code')
+    search_fields = ('counties', )
+    filter_fields = ('counties', 'cty_code')
 
 
 n_admin.site.register(County, CountyAdmin)

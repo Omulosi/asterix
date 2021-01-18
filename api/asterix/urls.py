@@ -20,20 +20,18 @@ from django.urls import path, include, re_path
 urlpatterns = [
     # Admin
     path("admin/", admin.site.urls),
-    re_path(
-        r"api/(?P<version>[v1|v2]+)/", include("asterix.apps.markers.rest_api.urls")
-    ),
-    re_path(r"api/(?P<version>[v1|v2]+)/", include("asterix.apps.account.urls")),
+    re_path(r"api/v1/", include("asterix.apps.markers.rest_api.urls")),
+    re_path(r"api/v1/", include("asterix.apps.account.urls")),
 ]
-
 
 # enable serve static by django for local development
 if settings.DEBUG:  # noqa
     from django.conf.urls.static import static
 
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)
 
 # enable debug_toolbar for local development (if installed)
 if settings.DEBUG and "debug_toolbar" in settings.INSTALLED_APPS:

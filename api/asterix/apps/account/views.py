@@ -44,6 +44,7 @@ class UserList(generics.ListAPIView):
 
 class UserLogin(ObtainAuthToken):
     serializer_class = CustomAuthTokenSerializer
+    permission_classes = (permissions.AllowAny, )
 
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
@@ -51,10 +52,10 @@ class UserLogin(ObtainAuthToken):
         return Response({"token": token.key, "userId": token.user_id})
 
 
-# class UserForgotPassword(generics.CreateAPIView):
-# serializer_class = ForgotPasswordSerializer
-# permission_classes = (permissions.AllowAny, )
+class LogoutView(generics.GenericAPIView):
 
-# class UserResetPassword(generics.CreateAPIView):
-# serializer_class = ResetPasswordSerializer
-# permission_classes = (permissions.AllowAny, )
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        response = LoginService.logout(request)
+        return response

@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "django_filters",
     "workers",
     "rest_framework.authtoken",
+    "dj_rest_auth",
     # "drf-yasg",
     # local apps
     "asterix.apps.common.apps.CommonConfig",
@@ -71,21 +72,19 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "asterix.urls"
 
-TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [rel("templates/")],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-            ]
-        },
-    }
-]
+TEMPLATES = [{
+    "BACKEND": "django.template.backends.django.DjangoTemplates",
+    "DIRS": [rel("templates/")],
+    "APP_DIRS": True,
+    "OPTIONS": {
+        "context_processors": [
+            "django.template.context_processors.debug",
+            "django.template.context_processors.request",
+            "django.contrib.auth.context_processors.auth",
+            "django.contrib.messages.context_processors.messages",
+        ]
+    },
+}]
 
 WSGI_APPLICATION = "asterix.wsgi.application"
 
@@ -100,10 +99,22 @@ DATABASES = {"default": env.db("ASTERIX_DATABASE_URL")}
 AUTH_USER_MODEL = "account.User"
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    {
+        "NAME":
+        "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
+    {
+        "NAME":
+        "django.contrib.auth.password_validation.MinimumLengthValidator"
+    },
+    {
+        "NAME":
+        "django.contrib.auth.password_validation.CommonPasswordValidator"
+    },
+    {
+        "NAME":
+        "django.contrib.auth.password_validation.NumericPasswordValidator"
+    },
 ]
 
 SESSION_COOKIE_SECURE = env.bool("ASTERIX_SESSION_COOKIE_SECURE", default=True)
@@ -128,7 +139,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = rel("staticfiles/")
-STATICFILES_DIRS = (rel("static/"),)
+STATICFILES_DIRS = (rel("static/"), )
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = rel("media/")
@@ -140,37 +151,41 @@ WORKERS_SLEEP = 1
 WORKERS_PURGE = 1000
 
 REST_FRAMEWORK = {
-    "DEFAULT_RENDERER_CLASSES": (
-        "djangorestframework_camel_case.render.CamelCaseJSONRenderer",
-        "rest_framework.renderers.BrowsableAPIRenderer",
-    ),
-    "DEFAULT_PARSER_CLASSES": ("djangorestframework_camel_case.parser.CamelCaseJSONParser",),
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "DEFAULT_PERMISSION_CLASSES":
+    ("rest_framework.permissions.IsAuthenticated", ),
+    "DEFAULT_PAGINATION_CLASS":
+    "rest_framework.pagination.LimitOffsetPagination",
     "DEFAULT_FILTER_BACKENDS": (
         "django_filters.rest_framework.DjangoFilterBackend",
         "rest_framework.filters.OrderingFilter",
         "rest_framework.filters.SearchFilter",
     ),
-    "EXCEPTION_HANDLER": "asterix.apps.libs.exception_handler.exception_handler",
+    "DEFAULT_RENDERER_CLASSES": (
+        "djangorestframework_camel_case.render.CamelCaseJSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ),
+    "DEFAULT_PARSER_CLASSES":
+    ("djangorestframework_camel_case.parser.CamelCaseJSONParser", ),
+    "EXCEPTION_HANDLER":
+    "asterix.apps.libs.exception_handler.custom_exception_handler",
 }
-
 
 APP_NAME = "asterix"
 ADMIN_TITLE = "Admin"
 ADMIN_HEADER = "Admin"
 
-
 # MAIL
 SEND_MAIL = env.str("SEND_MAIL") == "True"
-EMAIL_PROVIDER = os.environ.get("EMAIL_PROVIDER", "smtp")  # 'smtp' or 'sendgrid'
+EMAIL_PROVIDER = os.environ.get("EMAIL_PROVIDER",
+                                "smtp")  # 'smtp' or 'sendgrid'
 
 WEB_URL = env.str("WEB_URL")
-RESET_PASSWORD_URL = "{}{}".format(WEB_URL, "/reset-password/{reset_token}/{user_id}")
+RESET_PASSWORD_URL = "{}{}".format(WEB_URL,
+                                   "/reset-password/{reset_token}/{user_id}")
 DEFAULT_FROM_EMAIL = "asterix@no-reply.org"
 DEFAULT_FROM_NAME = "The Asterix Team"
 
