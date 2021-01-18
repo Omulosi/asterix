@@ -4,6 +4,8 @@ from asterix.apps.common import models as core_models
 
 
 class UserManager(core_models.CoreManager, BaseUserManager):
+    use_in_migrations = True
+
     def get_queryset(self):
         return core_models.CoreQuerySet(self.model, using=self._db)
 
@@ -21,6 +23,7 @@ class UserManager(core_models.CoreManager, BaseUserManager):
         user = self.create_user(**kwargs)
         user.is_admin = True
         user.is_superuser = True
+        user.is_active = True
         user.save(using=self._db)
 
         return user
