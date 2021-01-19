@@ -51,12 +51,14 @@ INSTALLED_APPS = [
     "workers",
     "rest_framework.authtoken",
     "dj_rest_auth",
+    "leaflet",
     # "drf-yasg",
     # local apps
     "asterix.apps.common.apps.CommonConfig",
     "asterix.apps.account.apps.AccountConfig",
     "asterix.apps.markers.apps.MarkersConfig",
     "asterix.apps.mail.apps.MailConfig",
+    "asterix.apps.shapefiles.apps.ShapefilesConfig",
 ] + env.list("ASTERIX_DEV_INSTALLED_APPS", default=[])
 
 MIDDLEWARE = [
@@ -155,8 +157,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES":
-    ("rest_framework.permissions.IsAuthenticated", ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny", ),
     "DEFAULT_PAGINATION_CLASS":
     "rest_framework.pagination.LimitOffsetPagination",
     "DEFAULT_FILTER_BACKENDS": (

@@ -13,14 +13,12 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { userSignUp } from '../../redux/actions/userActionCreators';
-import { Link, useHistory } from 'react-router-dom';
-import React, { useEffect } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { userSignUp } from "../redux/actions/userActionCreators";
+import { useHistory } from "react-router-dom";
+import { useEffect } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 function Copyright() {
   return (
@@ -60,37 +58,35 @@ export default function SignUp() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch({type: 'CLEAR_ERRORS'});
-  },[dispatch])
+    dispatch({ type: "CLEAR_ERRORS" });
+  }, [dispatch]);
 
   const history = useHistory();
-  const errors = useSelector(state => state.user.errors);
+  const errors = useSelector((state) => state.user.errors);
 
   const formik = useFormik({
     initialValues: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password:'',
-        errors: ''
-      },
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      errors: "",
+    },
     validationSchema: Yup.object({
-      firstName: Yup.string()
-        .required('Please provide your first name'),
-      lastName: Yup.string()
-        .required('Please provide your last name'),
+      firstName: Yup.string().required("Please provide your first name"),
+      lastName: Yup.string().required("Please provide your last name"),
       email: Yup.string()
-        .email('Invalid email address')
-        .required('Please provide an email'),
+        .email("Invalid email address")
+        .required("Please provide an email"),
       password: Yup.string()
-        .required('Please provide a password')
-        .min(8, 'Password too short'),
+        .required("Please provide a password")
+        .min(8, "Password too short"),
     }),
     onSubmit: (values, { setSubmitting }) => {
       dispatch(userSignUp(values, history, setSubmitting));
+      history.push("/dashboard");
     },
   });
-
 
   return (
     <Container component="main" maxWidth="xs">
@@ -136,8 +132,8 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                value={formik.values.email} 
-                onChange={formik.handleChange} 
+                value={formik.values.email}
+                onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
             </Grid>
@@ -168,7 +164,9 @@ export default function SignUp() {
             fullWidth
             variant="contained"
             color="primary"
-            className={`${classes.submit} ${formik.isSubmitting? 'is-loading': ''}`}
+            className={`${classes.submit} ${
+              formik.isSubmitting ? "is-loading" : ""
+            }`}
           >
             Sign Up
           </Button>

@@ -22,6 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     re_path(r"api/v1/", include("asterix.apps.markers.rest_api.urls")),
     re_path(r"api/v1/", include("asterix.apps.account.urls")),
+    re_path(r"api/v1/", include("asterix.apps.shapefiles.rest_api.urls")),
 ]
 
 # enable serve static by django for local development
