@@ -18,11 +18,13 @@ L.Icon.Default.mergeOptions({
 
 
 const MARKERS_LIST_API = 'http://localhost:8000/api/v1/markers/';
+const COUNTIES_LIST_API = 'http://localhost:8000/api/v1/counties/';
 
 const MapView = (props) => {
 
     const position = [-1.308889970195843, 36.86084746801358];
     const [features, setFeatures] = useState([]);
+    const [counties, setCounties] = useState([]);
 
     useEffect(() => {
         axios.get(`${MARKERS_LIST_API}`)
@@ -32,11 +34,20 @@ const MapView = (props) => {
         }).catch(err => {
             console.log(err);
         })
+
+        axios.get(`${COUNTIES_LIST_API}`)
+        .then(res => {
+            let data = res.data.counties? res.data.counties: [];
+            setCounties(data)
+        }).catch(err => {
+            console.log(err);
+        })
     }, [])
 
     const onChange = (data) => {
         console.log("GeoJson data => " + data.features);
         if (data) {
+            // persist to database
             axios.post(MARKERS_LIST_API, data)
             .then(res => {
                 console.log(res);

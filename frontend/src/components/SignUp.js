@@ -13,6 +13,15 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
+import { useDispatch, useSelector } from 'react-redux';
+import { userSignUp } from '../../redux/actions/userActionCreators';
+import { Link, useHistory } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -48,6 +57,40 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({type: 'CLEAR_ERRORS'});
+  },[dispatch])
+
+  const history = useHistory();
+  const errors = useSelector(state => state.user.errors);
+
+  const formik = useFormik({
+    initialValues: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password:'',
+        errors: ''
+      },
+    validationSchema: Yup.object({
+      firstName: Yup.string()
+        .required('Please provide your first name'),
+      lastName: Yup.string()
+        .required('Please provide your last name'),
+      email: Yup.string()
+        .email('Invalid email address')
+        .required('Please provide an email'),
+      password: Yup.string()
+        .required('Please provide a password')
+        .min(8, 'Password too short'),
+    }),
+    onSubmit: (values, { setSubmitting }) => {
+      dispatch(userSignUp(values, history, setSubmitting));
+    },
+  });
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -93,6 +136,9 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={formik.values.email} 
+                onChange={formik.handleChange} 
+                onBlur={formik.handleBlur}
               />
             </Grid>
             <Grid item xs={12}>
@@ -105,12 +151,15 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+                label="I want to receive updates via email."
               />
             </Grid>
           </Grid>
@@ -119,7 +168,7 @@ export default function SignUp() {
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            className={`${classes.submit} ${formik.isSubmitting? 'is-loading': ''}`}
           >
             Sign Up
           </Button>
