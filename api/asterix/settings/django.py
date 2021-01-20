@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     "django_filters",
     "workers",
     "rest_framework.authtoken",
-    "dj_rest_auth",
     "leaflet",
     # "drf-yasg",
     # local apps

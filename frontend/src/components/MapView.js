@@ -4,6 +4,9 @@ import L from "leaflet";
 import axios from "axios";
 import LocationMarkers from "./LocationMarkers";
 import EditControlComponent from "./EditControlComponent";
+import RoadLayer from "./layers/RoadLayer";
+
+
 import generalIconPng from "../assets/general_icon.svg";
 import shadowIconPng from "../assets/marker-shadow.png";
 
@@ -68,6 +71,7 @@ const MapView = (props) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <LocationMarkers locations={features} />
+      <RoadLayer />
       <EditControlComponent onChange={onChange} features={features} />
     </Map>
   );

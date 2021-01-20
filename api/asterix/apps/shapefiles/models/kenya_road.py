@@ -13,16 +13,3 @@ class KenyaRoad(models.Model):
 
     class Meta:
         verbose_name_plural = "kenya roads"
-
-
-# Auto-generated `LayerMapping` dictionary for KenyaRoad model
-kenyaroad_mapping = {
-    'fnode_field': 'FNODE_',
-    'tnode_field': 'TNODE_',
-    'lpoly_field': 'LPOLY_',
-    'rpoly_field': 'RPOLY_',
-    'length': 'LENGTH',
-    'kenroad_field': 'KENROAD_',
-    'kenroad_id': 'KENROAD_ID',
-    'geom': 'MULTILINESTRING',
-}

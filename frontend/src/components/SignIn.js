@@ -13,6 +13,13 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
+import { useDispatch, useSelector } from "react-redux";
+import { userLogin } from "../redux/actions/userActionCreators";
+import { useHistory } from "react-router-dom";
+import { useEffect } from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -46,56 +53,85 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const validationSchema = yup.object({
+  email: yup
+    .string('Enter your email')
+    .email('Enter a valid email')
+    .required('Email is required'),
+  password: yup
+    .string('Enter your password')
+    .min(8, 'Password should be of minimum 8 characters length')
+    .required('Password is required'),
+});
+
 export default function SignIn() {
   const classes = useStyles();
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const errors = useSelector((state) => state.user.errors);
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+      console.log(values);
+      dispatch(userLogin(values, history));
+      history.push("/dashboard");
+    },
+  });
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
+             <Avatar className={classes.avatar}>
+           <LockOutlinedIcon />
+         </Avatar>
+         <Typography component="h1" variant="h5">
+           Sign in
+         </Typography>
+      <form className={classes.form} onSubmit={formik.handleSubmit}>
+        <TextField
+          fullWidth
+          variant="outlined"
+          id="email"
+          name="email"
+          label="Email"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+          margin="normal"
+         autoFocus
+        />
+        <TextField
+          fullWidth
+          variant="outlined"
+          id="password"
+          name="password"
+          label="Password"
+          type="password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
+          margin="normal"
+         autoFocus
+        />
+        <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign In
-          </Button>
-          <Grid container>
+        <Button className={classes.submit} color="primary" variant="contained" fullWidth type="submit">
+          Submit
+        </Button>
+
+        <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
                 Forgot password?
@@ -107,11 +143,14 @@ export default function SignIn() {
               </Link>
             </Grid>
           </Grid>
-        </form>
-      </div>
-      <Box mt={8}>
+        
+      </form>
+    </div>
+    <Box mt={8}>
         <Copyright />
       </Box>
     </Container>
   );
+
+
 }

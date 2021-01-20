@@ -1,3 +1,3 @@
 from .county import CountySerializer
-from .kenya_river import KenyaRiverSerializer
-from .kenya_road import KenyaRoadSerializer
+from .kenya_rivers import KenyaRiverSerializer
+from .kenya_roads import KenyaRoadSerializer

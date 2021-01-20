@@ -4,6 +4,8 @@ import os
 from django.contrib.gis.utils import LayerMapping
 from asterix.apps.shapefiles.models import County
 
+DATA_DIR_NAME = os.path.join('data', 'counties' )
+
 county_mapping = {
     'counties': 'Counties',
     'codes': 'Codes',
@@ -13,7 +15,7 @@ county_mapping = {
 }
 
 county_shp = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), 'data', 'counties.shp'), )
+    os.path.join(os.path.dirname(__file__), DATA_DIR_NAME, 'counties.shp'), )
 
 
 def run(verbose=True):

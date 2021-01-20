@@ -13,14 +13,16 @@ import { axiosWithAuth } from "../../utils/axiosAuth";
 
 import { baseUrl } from "../../config/index";
 
-export const userLogin = (userData, history, setSubmitting) => (dispatch) => {
+export const userLogin = (userData, history) => (dispatch) => {
   dispatch({ type: LOADING });
+  debugger;
   axios
     .post(`${baseUrl}/auth/login`, {
       email: userData.email,
       password: userData.password,
     })
     .then(({ data }) => {
+      debugger;
       const user = data.data[0].user;
       dispatch({
         type: LOGIN,
@@ -29,7 +31,6 @@ export const userLogin = (userData, history, setSubmitting) => (dispatch) => {
       const token = data.data[0].access_token;
       localStorage.setItem("token", `${token}`);
       history.push("/dashboard");
-      setSubmitting(false);
     })
     .catch((err) => {
       let error = err.response ? err.response.data.error : err.message;
@@ -37,39 +38,17 @@ export const userLogin = (userData, history, setSubmitting) => (dispatch) => {
         type: SET_ERRORS,
         payload: { error },
       });
-      setSubmitting(false);
+     
     });
 };
 
-export const userPasswordReset = (userData, history, setSubmitting) => (
-  dispatch
-) => {
-  dispatch({ type: LOADING });
-  axios
-    .post(`${baseUrl}/auth/reset`, {
-      email: userData.email,
-    })
-    .then(({ data }) => {
-      setSubmitting(false);
-      dispatch({
-        type: RESET_PASSWORD,
-      });
-    })
-    .catch((err) => {
-      let error = err.response ? err.response.data.error : err.message;
-      dispatch({
-        type: SET_ERRORS,
-        payload: { error },
-      });
-      setSubmitting(false);
-    });
-};
-
-export const userSignUp = (userData, history, setSubmitting) => (dispatch) => {
+export const userSignUp = (userData, history) => (dispatch) => {
+  debugger;
   dispatch({ type: LOADING });
   axios
     .post(`${baseUrl}/auth/signup`, userData)
     .then(({ data }) => {
+      debugger;
       const user = data.data[0].user;
       dispatch({
         type: LOGIN,
@@ -78,7 +57,6 @@ export const userSignUp = (userData, history, setSubmitting) => (dispatch) => {
       const token = data.data[0].access_token;
       localStorage.setItem("token", `${token}`);
       history.push("/dashboard");
-      setSubmitting(false);
     })
     .catch((err) => {
       let error = err.response ? err.response.data.error : err.message;
@@ -86,7 +64,7 @@ export const userSignUp = (userData, history, setSubmitting) => (dispatch) => {
         type: SET_ERRORS,
         payload: { error },
       });
-      setSubmitting(false);
+    
     });
 };
 
