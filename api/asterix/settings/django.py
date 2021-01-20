@@ -145,7 +145,7 @@ STATICFILES_DIRS = (rel("static/"), )
 MEDIA_URL = "/media/"
 MEDIA_ROOT = rel("media/")
 
-CORS_ORIGIN_WHITELIST = ("http://localhost:3000", "http://localhost:8000")
+CORS_ORIGIN_WHITELIST = ("http://localhost:3000", "http://localhost:8000", "http://192.168.60.59:8000")
 CORS_ORIGIN_ALLOW_ALL = True
 
 WORKERS_SLEEP = 1
@@ -184,17 +184,17 @@ EMAIL_PROVIDER = os.environ.get("EMAIL_PROVIDER",
                                 "smtp")  # 'smtp' or 'sendgrid'
 
 WEB_URL = env.str("WEB_URL")
-RESET_PASSWORD_URL = "{}{}".format(WEB_URL,
-                                   "/reset-password/{reset_token}/{user_id}")
-DEFAULT_FROM_EMAIL = "asterix@no-reply.org"
-DEFAULT_FROM_NAME = "The Asterix Team"
+# RESET_PASSWORD_URL = "{}{}".format(WEB_URL,
+#                                    "/reset-password/{reset_token}/{user_id}")
+# DEFAULT_FROM_EMAIL = "asterix@no-reply.org"
+# DEFAULT_FROM_NAME = "The Asterix Team"
 
-if EMAIL_PROVIDER == "smtp":
-    EMAIL_HOST = env.str("SMTP_SERVER")
-    EMAIL_HOST_USER = env.str("SMTP_LOGIN")
-    EMAIL_HOST_PASSWORD = env.str("SMTP_PASSWORD")
-    EMAIL_PORT = env.str("SMTP_PORT", 587)
-    EMAIL_USE_TLS = True
+# if EMAIL_PROVIDER == "smtp":
+#     EMAIL_HOST = env.str("SMTP_SERVER")
+#     EMAIL_HOST_USER = env.str("SMTP_LOGIN")
+#     EMAIL_HOST_PASSWORD = env.str("SMTP_PASSWORD")
+#     EMAIL_PORT = env.str("SMTP_PORT", 587)
+#     EMAIL_USE_TLS = True
 
-SENDGRID_API_KEY = env.str("SENDGRID_API_KEY")
-SENDGRID_URL = "https://api.sendgrid.com/v3/mail/send"
+# SENDGRID_API_KEY = env.str("SENDGRID_API_KEY")
+# SENDGRID_URL = "https://api.sendgrid.com/v3/mail/send"

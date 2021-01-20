@@ -18,4 +18,4 @@ class Migration(migrations.Migration):
         ('shapefiles', '0003_county_dis'),
     ]
 
-    operations = [migrations.RunPython(load_data)]
+    operations = []

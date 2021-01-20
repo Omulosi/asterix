@@ -14,24 +14,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin } from "../redux/actions/userActionCreators";
+import { userLogin } from "../../redux/actions/userActionCreators";
 import { useHistory } from "react-router-dom";
-import { useEffect } from "react";
+
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://">
-        Asterix
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import Copyright from "../shared/Copyright";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -54,6 +43,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const validationSchema = yup.object({
+  firstName: yup
+  .string('Enter your first name')
+  .required('Name is required'),
+  lastName: yup
+  .string('Enter your last name')
+  .required('Name is required'),
   email: yup
     .string('Enter your email')
     .email('Enter a valid email')
@@ -64,7 +59,7 @@ const validationSchema = yup.object({
     .required('Password is required'),
 });
 
-export default function SignIn() {
+export default function SignUp() {
   const classes = useStyles();
 
   const dispatch = useDispatch();
@@ -93,10 +88,37 @@ export default function SignIn() {
            <LockOutlinedIcon />
          </Avatar>
          <Typography component="h1" variant="h5">
-           Sign in
+           Sign Up
          </Typography>
       <form className={classes.form} onSubmit={formik.handleSubmit}>
-        <TextField
+      <TextField
+      fullWidth
+      variant="outlined"
+      id="firstname"
+      name="firstName"
+      label="First Name"
+      value={formik.values.firstName}
+      onChange={formik.handleChange}
+      error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+      helperText={formik.touched.firstName && formik.errors.firstName}
+      margin="normal"
+     autoFocus
+    />
+    <TextField
+    fullWidth
+    variant="outlined"
+    id="email"
+    name="lastName"
+    label="Last Name"
+    value={formik.values.email}
+    onChange={formik.handleChange}
+    error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+    helperText={formik.touched.lastName && formik.errors.lastName}
+    margin="normal"
+   autoFocus
+  />
+      
+      <TextField
           fullWidth
           variant="outlined"
           id="email"
@@ -132,23 +154,17 @@ export default function SignIn() {
         </Button>
 
         <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
-              <Link href="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
+            <Box>
+             <Link href="/login" variant="body2">
+                {"Already have an account? Sign In"}
               </Link>
+            </Box>
             </Grid>
           </Grid>
         
       </form>
     </div>
-    <Box mt={8}>
-        <Copyright />
-      </Box>
     </Container>
   );
 

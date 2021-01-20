@@ -5,6 +5,8 @@ import axios from "axios";
 import LocationMarkers from "./LocationMarkers";
 import EditControlComponent from "./EditControlComponent";
 import RoadLayer from "./layers/RoadLayer";
+import RiverLayer from "./layers/RiverLayer";
+
 
 
 import generalIconPng from "../assets/general_icon.svg";
@@ -19,8 +21,8 @@ L.Icon.Default.mergeOptions({
   iconSize: [50, 50],
 });
 
-const MARKERS_LIST_API = "http://localhost:8000/api/v1/markers/";
-const COUNTIES_LIST_API = "http://localhost:8000/api/v1/counties/";
+const MARKERS_LIST_API = "http://127.0.0.1:8000/api/v1/markers/";
+const COUNTIES_LIST_API = "http://127.0.0.1:8000/api/v1/counties/";
 
 const MapView = (props) => {
   const position = [-1.308889970195843, 36.86084746801358];
@@ -71,7 +73,9 @@ const MapView = (props) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <LocationMarkers locations={features} />
+      <GeoJSON data={counties} />
       <RoadLayer />
+      <RiverLayer />
       <EditControlComponent onChange={onChange} features={features} />
     </Map>
   );
