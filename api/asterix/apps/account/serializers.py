@@ -8,8 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ("pk", "first_name", "last_name", "email", "password",
-                  "is_staff")
+        fields = ("pk", "first_name", "last_name", "email", "password", "is_staff")
         extra_kwargs = {"password": {"write_only": True}}
 
     def get_is_staff(self, obj):
@@ -18,8 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
     def validate_email(self, value):
         norm_email = value.lower()
         if get_user_model().objects.filter(email=norm_email).exists():
-            raise serializers.ValidationError(
-                "user with this email address already exists.")
+            raise serializers.ValidationError("user with this email address already exists.")
         return norm_email
 
     def create(self, validated_data):
@@ -41,22 +39,21 @@ class CustomAuthTokenSerializer(serializers.Serializer):
     """
 
     email = serializers.CharField(label=_("Email"))
-    password = serializers.CharField(label=_("Password"),
-                                     style={"input_type": "password"},
-                                     trim_whitespace=False)
+    password = serializers.CharField(label=_("Password"), style={"input_type": "password"}, trim_whitespace=False)
 
     def validate(self, attrs):
         email = attrs.get("email")
         password = attrs.get("password")
 
         if email and password:
-            user = authenticate(request=self.context.get("request"),
-                                email=email.lower(),
-                                password=password)
+            user = authenticate(request=self.context.get("request"), email=email.lower(), password=password)
 
             # The authenticate call simply returns None for is_active=False
             # users. (Assuming the default ModelBackend authentication
             # backend.)
+            print("###################################################")
+            print(user)
+            print("##############################################")
             if not user:
                 msg = _("Invalid email or password")
                 raise serializers.ValidationError(msg, code="authorization")
