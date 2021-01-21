@@ -4,18 +4,19 @@ import os
 from django.contrib.gis.utils import LayerMapping
 from asterix.apps.shapefiles.models import County
 
-DATA_DIR_NAME = os.path.join('data', 'counties' )
+DATA_DIR_NAME = os.path.join("data", "counties")
 
 county_mapping = {
-    'counties': 'Counties',
-    'codes': 'Codes',
-    'cty_code': 'Cty_CODE',
-    'dis': 'dis',
-    'geom': 'MULTIPOLYGON',
+    "counties": "Counties",
+    "codes": "Codes",
+    "cty_code": "Cty_CODE",
+    "dis": "dis",
+    "geom": "MULTIPOLYGON",
 }
 
 county_shp = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), DATA_DIR_NAME, 'counties.shp'), )
+    os.path.join(os.path.dirname(__file__), DATA_DIR_NAME, "counties.shp")
+)
 
 
 def run(verbose=True):
@@ -24,9 +25,7 @@ def run(verbose=True):
     load a shapefile to the database
     """
     # Takes model name, path to shapefile, mapping dict, encoding format
-    lm = LayerMapping(County,
-                      county_shp,
-                      county_mapping,
-                      transform=False,
-                      encoding='iso-8859-1')
+    lm = LayerMapping(
+        County, county_shp, county_mapping, transform=False, encoding="iso-8859-1"
+    )
     lm.save(strict=True, verbose=verbose)

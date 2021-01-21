@@ -5,17 +5,10 @@ from django.db import migrations
 from django.contrib.gis.utils import LayerMapping
 from ..models import County
 from django.db import migrations
-from .. import load_kenya_rivers as loader
 
-
-def load_data(apps, shema_editor):
-    loader.run()
-
-
+# Won't run, no corresponding database created yet, ignore
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('shapefiles', '0003_county_dis'),
-    ]
+    dependencies = [("shapefiles", "0003_county_dis")]
 
     operations = []
