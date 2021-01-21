@@ -20,7 +20,6 @@ from django.urls import include, path, re_path
 urlpatterns = [
     # Admin
     re_path(r"^jet/", include("jet.urls", "jet")),
-    re_path(r"^jet/dashboard/", include("jet.dashboard.urls", "jet-dashboard")),
     path("admin/", admin.site.urls),
     re_path(r"api/v1/", include("asterix.apps.markers.rest_api.urls")),
     re_path(r"api/v1/", include("asterix.apps.account.urls")),
@@ -31,8 +30,10 @@ urlpatterns = [
 if settings.DEBUG:  # noqa
     from django.conf.urls.static import static
 
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)
 
 # enable debug_toolbar for local development (if installed)
 if settings.DEBUG and "debug_toolbar" in settings.INSTALLED_APPS:
