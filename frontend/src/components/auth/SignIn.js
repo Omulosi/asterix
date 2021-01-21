@@ -13,7 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { userLogin } from "../../redux/actions/userActionCreators";
 import { useHistory } from "react-router-dom";
 import { useFormik } from "formik";
@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  error: {
+    color: "#f15",
+  }
 }));
 
 const validationSchema = yup.object({
@@ -56,7 +59,7 @@ export default function SignIn() {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  //const errors = useSelector((state) => state.user.errors);
+  const errors = useSelector((state) => state.user.errors);
 
   const formik = useFormik({
     initialValues: {
@@ -65,10 +68,8 @@ export default function SignIn() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
       console.log(values);
       dispatch(userLogin(values, history));
-      history.push("/dashboard");
     },
   });
 
@@ -81,6 +82,9 @@ export default function SignIn() {
          </Avatar>
          <Typography component="h1" variant="h5">
            Sign in
+         </Typography>
+         <Typography component="p" textAlign="center" className={classes.error}>
+           {errors && errors.error}
          </Typography>
       <form className={classes.form} onSubmit={formik.handleSubmit}>
         <TextField

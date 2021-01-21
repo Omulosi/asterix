@@ -5,7 +5,9 @@ import theme from "./theme";
 import GlobalStyles from "./GlobalStyles";
 import * as serviceWorker from "./serviceWorker";
 import Pace from "./components/shared/Pace";
-import LoggedInComponent from "./components/dashboard/Main";
+
+
+const LoggedInComponent  = lazy(() => import("./components/dashboard/Main"));
 
 const LoggedOutComponent = lazy(() => import("./components/home/Main"));
 

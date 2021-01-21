@@ -14,7 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin } from "../../redux/actions/userActionCreators";
+import { userSignUp } from "../../redux/actions/userActionCreators";
 import { useHistory } from "react-router-dom";
 
 import { useFormik } from "formik";
@@ -70,13 +70,13 @@ export default function SignUp() {
     initialValues: {
       email: '',
       password: '',
+      first_name: '',
+      last_name:''
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
       console.log(values);
-      dispatch(userLogin(values, history));
-      history.push("/dashboard");
+      dispatch(userSignUp(values, history));
     },
   });
 

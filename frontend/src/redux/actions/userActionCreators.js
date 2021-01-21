@@ -6,7 +6,6 @@ import {
   UPDATE_USER_DETAILS,
   EDITTING_USER,
   LOGOUT,
-  RESET_PASSWORD,
   SUCCESS,
 } from "../types";
 import { axiosWithAuth } from "../../utils/axiosAuth";
@@ -22,22 +21,26 @@ export const userLogin = (userData, history) => (dispatch) => {
       password: userData.password,
     })
     .then(({ data }) => {
-      debugger;
-      const user = data.data[0].user;
-      dispatch({
-        type: LOGIN,
-        payload: user,
-      });
-      const token = data.data[0].access_token;
+      // get user details too: data.userId
+      const token = data.token;
       localStorage.setItem("token", `${token}`);
-      history.push("/dashboard");
+      history.push("/c/dashboard");
     })
     .catch((err) => {
-      let error = err.response ? err.response.data.error : err.message;
+      let errorMsg;
+      if (err.response) {
+        if (err.response.data.non_field_errors) {
+          errorMsg = err.response.data.non_field_errors[0]
+        }
+        else{
+          errorMsg = err.message;
+        }
+      }
       dispatch({
         type: SET_ERRORS,
-        payload: { error },
+        payload: { errorMsg },
       });
+      alert(errorMsg);
      
     });
 };
@@ -48,22 +51,25 @@ export const userSignUp = (userData, history) => (dispatch) => {
   axios
     .post(`${baseUrl}/auth/signup`, userData)
     .then(({ data }) => {
-      debugger;
-      const user = data.data[0].user;
-      dispatch({
-        type: LOGIN,
-        payload: user,
-      });
-      const token = data.data[0].access_token;
+      const token = data.token;
       localStorage.setItem("token", `${token}`);
-      history.push("/dashboard");
+      history.push("/c/dashboard");
     })
     .catch((err) => {
-      let error = err.response ? err.response.data.error : err.message;
+      let errorMsg;
+      if (err.response) {
+        if (err.response.data.non_field_errors) {
+          errorMsg = err.response.data.non_field_errors[0]
+        }
+        else{
+          errorMsg = err.message;
+        }
+      }
       dispatch({
         type: SET_ERRORS,
-        payload: { error },
+        payload: { errorMsg },
       });
+      alert(errorMsg);
     
     });
 };

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core";
 import Routing from "./Routing";
-import NavBar from "./NavBar";
+import AuthNavBar from "./AuthNavBar";
 import ConsecutiveSnackbarMessages from "../shared/ConsecutiveSnackbarMessages";
 import smoothScrollTop from "../../utils/smoothScrollTop";
 
@@ -69,8 +69,8 @@ function Main(props) {
 
   const selectSettings = useCallback(() => {
     smoothScrollTop();
-    document.title = "Asterix - Subscription";
-    setSelectedTab("Subscription");
+    document.title = "Asterix - Settings";
+    setSelectedTab("Settings");
   }, [setSelectedTab]);
 
   const getPushMessageFromChild = useCallback(
@@ -95,7 +95,7 @@ function Main(props) {
 
   return (
     <Fragment>
-      <NavBar
+      <AuthNavBar
         selectedTab={selectedTab}
       />
       <ConsecutiveSnackbarMessages
