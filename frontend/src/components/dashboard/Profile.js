@@ -7,6 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
+import TextField from '@material-ui/core/TextField';
 
 
 const useStyles = makeStyles({
@@ -55,7 +56,18 @@ const Profile = (props) => {
         </Box>
         </TableCell>
         <TableCell align="left" className={classes.cells}>
-        
+        <form className={classes.root} autoComplete="off">
+            <TextField
+            id="standard-full-width"
+            style={{ margin: 8 }}
+            fullWidth
+            margin="normal"
+            value={`${firstName}`}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </form>
         </TableCell>
       </TableRow>
 
@@ -66,7 +78,18 @@ const Profile = (props) => {
           </Box>
           </TableCell>
           <TableCell align="right" className={classes.cells}>
-          
+          <form className={classes.root} autoComplete="off">
+          <TextField
+          id="standard-full-width"
+          style={{ margin: 8 }}
+          fullWidth
+          margin="normal"
+          value={`${lastName}`}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </form>
           </TableCell>
         </TableRow>
 
@@ -77,7 +100,17 @@ const Profile = (props) => {
         </Box>
         </TableCell>
         <TableCell align="right" className={classes.cells}>
-        
+        <form>
+        <TextField
+        id="standard-full-width"
+        style={{ margin: 8 }}
+        fullWidth
+        margin="normal"
+        value={`${email}`}
+        InputLabelProps={{
+          shrink: true,
+        }}
+      /></form>
         </TableCell>
       </TableRow>
 
