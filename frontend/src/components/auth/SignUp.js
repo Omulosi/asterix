@@ -20,8 +20,6 @@ import { useHistory } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-import Copyright from "../shared/Copyright";
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -70,8 +68,8 @@ export default function SignUp() {
     initialValues: {
       email: '',
       password: '',
-      first_name: '',
-      last_name:''
+      firstName: '',
+      lastName:''
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -94,7 +92,7 @@ export default function SignUp() {
       <TextField
       fullWidth
       variant="outlined"
-      id="firstname"
+      id="firstName"
       name="firstName"
       label="First Name"
       value={formik.values.firstName}
@@ -107,10 +105,10 @@ export default function SignUp() {
     <TextField
     fullWidth
     variant="outlined"
-    id="email"
+    id="lastName"
     name="lastName"
     label="Last Name"
-    value={formik.values.email}
+    value={formik.values.lastName}
     onChange={formik.handleChange}
     error={formik.touched.lastName && Boolean(formik.errors.lastName)}
     helperText={formik.touched.lastName && formik.errors.lastName}
@@ -145,10 +143,6 @@ export default function SignUp() {
           margin="normal"
          autoFocus
         />
-        <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
         <Button className={classes.submit} color="primary" variant="contained" fullWidth type="submit">
           Submit
         </Button>

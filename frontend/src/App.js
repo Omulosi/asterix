@@ -5,6 +5,7 @@ import theme from "./theme";
 import GlobalStyles from "./GlobalStyles";
 import * as serviceWorker from "./serviceWorker";
 import Pace from "./components/shared/Pace";
+import PrivateRoute from "./components/PrivateRoute";
 
 
 const LoggedInComponent  = lazy(() => import("./components/dashboard/Main"));
@@ -20,9 +21,9 @@ const App = () => {
         <Pace color={theme.palette.primary.light} />
         <Suspense fallback={<Fragment />}>
           <Switch>
-            <Route path="/c">
+            <PrivateRoute path="/c/*">
             <LoggedInComponent />
-            </Route>
+            </PrivateRoute>
             <Route>
               <LoggedOutComponent />
             </Route>

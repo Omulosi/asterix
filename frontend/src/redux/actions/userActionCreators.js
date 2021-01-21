@@ -10,13 +10,13 @@ import {
 } from "../types";
 import { axiosWithAuth } from "../../utils/axiosAuth";
 
-import { baseUrl } from "../../config/index";
+import { BASE_URL } from "../../config/index";
 
 export const userLogin = (userData, history) => (dispatch) => {
   dispatch({ type: LOADING });
   debugger;
   axios
-    .post(`${baseUrl}/auth/login`, {
+    .post(`${BASE_URL}/auth/login`, {
       email: userData.email,
       password: userData.password,
     })
@@ -49,7 +49,12 @@ export const userSignUp = (userData, history) => (dispatch) => {
   debugger;
   dispatch({ type: LOADING });
   axios
-    .post(`${baseUrl}/auth/signup`, userData)
+    .post(`${BASE_URL}/auth/signup`, {
+      first_name: userData.firstName,
+      last_name: userData.lastName,
+      email: userData.email,
+      password: userData.password
+    })
     .then(({ data }) => {
       const token = data.token;
       localStorage.setItem("token", `${token}`);

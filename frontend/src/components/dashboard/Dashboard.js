@@ -16,11 +16,6 @@ const Dashboard = (props) => {
 
   return (
     <Fragment>
-      <Box mt={2}>
-        <Typography variant="subtitle1" gutterBottom>
-            layer selection
-        </Typography>
-      </Box>
       <MapView 
         markers={markers}
         counties={counties}

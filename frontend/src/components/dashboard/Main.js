@@ -7,6 +7,14 @@ import AuthNavBar from "./AuthNavBar";
 import ConsecutiveSnackbarMessages from "../shared/ConsecutiveSnackbarMessages";
 import smoothScrollTop from "../../utils/smoothScrollTop";
 
+import kenya_counties from "../../dummy_data/counties";
+import kenya_rivers from "../../dummy_data/kenya_rivers";
+import kenya_roads from "../../dummy_data/kenya_roads";
+import kenya_markers from "../../dummy_data/markers";
+
+import { PROFILE_ENDPOINT } from "../../config";
+import { axiosWithAuth } from "../../utils/axiosAuth";
+
 const styles = (theme) => ({
   main: {
     marginLeft: theme.spacing(9),
@@ -24,32 +32,43 @@ const styles = (theme) => ({
 function Main(props) {
   const { classes } = props;
   const [selectedTab, setSelectedTab] = useState(null);
-  const [markers, setMarkers] = useState([]);
-  const [counties, setCounties] = useState({ views: [], profit: [] });
-  const [rivers, setRivers] = useState([]);
-  const [roads, setRoads] = useState([]);
+  const [markers, setMarkers] = useState({});
+  const [counties, setCounties] = useState({});
+  const [rivers, setRivers] = useState({});
+  const [roads, setRoads] = useState({});
   const [pushMessageToSnackbar, setPushMessageToSnackbar] = useState(null);
+  const [profileData, setProfileData] = useState({});
 
+
+  // Fetch Data
   const fetchMarkers = useCallback(() => {
       //Axios call to remote API
-    const markers = [];
-
-    setMarkers(markers);
+    setMarkers(kenya_markers);
 
   }, [setMarkers]);
 
   const fetchCounties = useCallback(() => {
-   let counties = [];
-    setCounties(counties);
+    setCounties(kenya_counties);
   }, [setCounties]);
 
   const fetchRivers = useCallback(() => {
-    setRivers([]);
+    setRivers(kenya_rivers);
   }, [setRivers]);
 
   const fetchRoads = useCallback(() => {
-    setRoads([]);
+    setRoads(kenya_roads);
   }, [setRoads]);
+
+  const fetchProfileData = useCallback(() => {
+    axiosWithAuth()
+    .get(`${PROFILE_ENDPOINT}`)
+    .then( ({ data }) => {
+      setProfileData(data);
+    }).catch((err) => {
+      console.log(err);
+      alert(err.message);
+    })
+  }, [setProfileData])
 
   const selectDashboard = useCallback(() => {
     smoothScrollTop();
@@ -86,17 +105,20 @@ function Main(props) {
     fetchMarkers();
     fetchRivers();
     fetchRoads();
+    fetchProfileData();
   }, [
     fetchCounties,
     fetchMarkers,
     fetchRivers,
     fetchRoads,
+    fetchProfileData
   ]);
 
   return (
     <Fragment>
       <AuthNavBar
         selectedTab={selectedTab}
+        profileData={profileData}
       />
       <ConsecutiveSnackbarMessages
         getPushMessageFromChild={getPushMessageFromChild}
@@ -111,6 +133,7 @@ function Main(props) {
           counties={counties}
           rivers={rivers}
           roads={roads}
+          profileData={profileData}
         />
       </main>
     </Fragment>

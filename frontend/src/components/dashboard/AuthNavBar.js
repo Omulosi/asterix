@@ -1,7 +1,7 @@
 import React, { Fragment, useRef, useCallback, useState } from "react";
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import {
@@ -26,8 +26,11 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import MenuIcon from "@material-ui/icons/Menu";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SideDrawer from "./SideDrawer";
 import NavigationDrawer from "../shared/NavigationDrawer";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/actions/userActionCreators";
 
 const styles = (theme) => ({
   appBar: {
@@ -125,7 +128,13 @@ const styles = (theme) => ({
 });
 
 function AuthNavBar(props) {
-  const { selectedTab, messages, classes, width, openAddBalanceDialog } = props;
+  const { selectedTab, classes, width, profileData } = props;
+
+  const { email } = profileData;
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+
   // Will be use to make website more accessible by screen readers
   const links = useRef([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -146,6 +155,10 @@ function AuthNavBar(props) {
   const closeDrawer = useCallback(() => {
     setIsSideDrawerOpen(false);
   }, [setIsSideDrawerOpen]);
+
+  const logoutUser = useCallback(() => {
+    dispatch(logout(history))
+  })
 
   const menuItems = [
     {
@@ -201,6 +214,7 @@ function AuthNavBar(props) {
     {
       link: "/",
       name: "Logout",
+      onClick: logoutUser,
       icon: {
         desktop: (
           <PowerSettingsNewIcon className="text-white" fontSize="small" />
@@ -254,28 +268,17 @@ function AuthNavBar(props) {
               disableGutters
               className={classNames(classes.iconListItem, classes.smBordered)}
             >
-              <Avatar
-                alt="profile picture"
-                src={`${process.env.PUBLIC_URL}/images/logged_in/profilePicture.jpg`}
-                className={classNames(classes.accountAvatar)}
-              />
               {isWidthUp("sm", width) && (
                 <ListItemText
                   className={classes.username}
                   primary={
-                    <Typography color="textPrimary">Username</Typography>
+                    <Typography color="textPrimary">{email}</Typography>
                   }
                 />
               )}
             </ListItem>
           </Box>
-          <IconButton
-            onClick={openDrawer}
-            color="primary"
-            aria-label="Open Sidedrawer"
-          >
-            <SupervisorAccountIcon />
-          </IconButton>
+          <AccountCircleIcon  color="primary" />
           <SideDrawer open={isSideDrawerOpen} onClose={closeDrawer} />
         </Toolbar>
       </AppBar>

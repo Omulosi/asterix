@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Map, TileLayer, GeoJSON } from "react-leaflet";
+import { Map, LayersControl, LayerGroup } from "react-leaflet";
 import L from "leaflet";
 import axios from "axios";
-import LocationMarkers from "./LocationMarkers";
-import EditControlComponent from "./EditControlComponent";
-import RoadLayer from "./layers/RoadLayer";
-import RiverLayer from "./layers/RiverLayer";
-
-
-
+import { OSMTileLayer, RoadLayer, RiverLayer, CountyLayer, LocationMarkers, EditControlComponent } from "./layers";
 import generalIconPng from "../assets/general_icon.svg";
 import shadowIconPng from "../assets/marker-shadow.png";
 
@@ -22,12 +16,12 @@ L.Icon.Default.mergeOptions({
 });
 
 const MARKERS_LIST_API = "http://127.0.0.1:8000/api/v1/markers/";
-const COUNTIES_LIST_API = "http://127.0.0.1:8000/api/v1/counties/";
 
 const MapView = (props) => {
+  const { markers, counties, rivers, roads, pushMessageToSnackbar } = props;
+
   const position = [-1.308889970195843, 36.86084746801358];
   const [features, setFeatures] = useState([]);
-  const [counties, setCounties] = useState([]);
 
   useEffect(() => {
     axios
@@ -35,16 +29,6 @@ const MapView = (props) => {
       .then((res) => {
         let data = res.data.features ? res.data.features : [];
         setFeatures(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    axios
-      .get(`${COUNTIES_LIST_API}`)
-      .then((res) => {
-        let data = res.data.features ? res.data.features : [];
-        setCounties(data);
       })
       .catch((err) => {
         console.log(err);
@@ -67,16 +51,35 @@ const MapView = (props) => {
   };
 
   return (
-    <Map className="map" center={position} zoom={10}>
-      <TileLayer
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <LocationMarkers locations={features} />
-      <GeoJSON data={counties} />
-      <RoadLayer />
-      <RiverLayer />
-      <EditControlComponent onChange={onChange} features={features} />
+    <Map className="map" center={position} zoom={7}>
+      <LayersControl position="topright">
+        <LayersControl.BaseLayer checked name="OpenStreetMap">
+          <OSMTileLayer />,
+        </LayersControl.BaseLayer>
+
+        <LayersControl.Overlay name="Location Markers" checked>
+        <LayerGroup>
+        <LocationMarkers locations={features} />
+        </LayerGroup>
+          
+        </LayersControl.Overlay>
+
+        <LayersControl.Overlay name="Counties - Kenya">
+          <CountyLayer data={counties} />,
+        </LayersControl.Overlay>
+
+        <LayersControl.Overlay name="Rivers - Kenya">
+          <RiverLayer data={rivers} />
+        </LayersControl.Overlay>
+
+        <LayersControl.Overlay name="Roads - Kenya">
+          <RoadLayer data={roads} />
+        </LayersControl.Overlay>
+
+        <LayersControl.Overlay name="Edit Control">
+          <EditControlComponent onChange={onChange} data={features} />
+        </LayersControl.Overlay>
+      </LayersControl>
     </Map>
   );
 };

@@ -16,29 +16,30 @@ const styles = (theme) => ({
       width: "95%",
       marginLeft: "auto",
       marginRight: "auto",
-      marginTop: theme.spacing(4),
-      marginBottom: theme.spacing(4),
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2),
     },
     [theme.breakpoints.up("sm")]: {
-      marginTop: theme.spacing(6),
-      marginBottom: theme.spacing(6),
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2),
       width: "90%",
       marginLeft: "auto",
       marginRight: "auto",
     },
     [theme.breakpoints.up("md")]: {
-      marginTop: theme.spacing(6),
-      marginBottom: theme.spacing(6),
-      width: "82.5%",
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2),
+      width: "100%",
       marginLeft: "auto",
       marginRight: "auto",
     },
     [theme.breakpoints.up("lg")]: {
-      marginTop: theme.spacing(6),
-      marginBottom: theme.spacing(6),
-      width: "70%",
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+      width: "100%",
       marginLeft: "auto",
       marginRight: "auto",
+      padding: "1%",
     },
   },
 });
@@ -53,7 +54,8 @@ function Routing(props) {
     markers,
     counties,
     rivers,
-    roads
+    roads,
+    profileData
   } = props;
   return (
     <div className={classes.wrapper}>
@@ -63,6 +65,7 @@ function Routing(props) {
           component={Profile}
           pushMessageToSnackbar={pushMessageToSnackbar}
           selectProfile={selectProfile}
+          profileData={profileData}
         />
         <PropsRoute
           path="/c/settings"
