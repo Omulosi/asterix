@@ -12,7 +12,13 @@ import kenya_rivers from "../../dummy_data/kenya_rivers";
 import kenya_roads from "../../dummy_data/kenya_roads";
 import kenya_markers from "../../dummy_data/markers";
 
-import { PROFILE_ENDPOINT } from "../../config";
+import { 
+  PROFILE_ENDPOINT, 
+  MARKERS_LIST_ENDPONT,
+  COUNTIES_LIST_ENDPONT,
+  ROADS_LIST_ENDPONT,
+  RIVERS_LIST_ENDPONT
+} from "../../config";
 import { axiosWithAuth } from "../../utils/axiosAuth";
 
 const styles = (theme) => ({
@@ -43,19 +49,50 @@ function Main(props) {
   // Fetch Data
   const fetchMarkers = useCallback(() => {
       //Axios call to remote API
+    //axiosWithAuth()
+    //.get(`${MARKERS_LIST_ENDPONT}`)
+    //.then( ({ data }) => {
+      //setMarkers(data);
+    //}).catch((err) => {
+      //console.log(err);
+      //alert(err.message);
+    //})
     setMarkers(kenya_markers);
-
   }, [setMarkers]);
 
   const fetchCounties = useCallback(() => {
+    axiosWithAuth()
+    .get(`${COUNTIES_LIST_ENDPONT}`)
+    .then( ({ data }) => {
+      setCounties(data);
+    }).catch((err) => {
+      console.log(err);
+      alert(err.message);
+    })
     setCounties(kenya_counties);
   }, [setCounties]);
 
   const fetchRivers = useCallback(() => {
+    axiosWithAuth()
+    .get(`${RIVERS_LIST_ENDPONT}`)
+    .then( ({ data }) => {
+      setRivers(data);
+    }).catch((err) => {
+      console.log(err);
+      alert(err.message);
+    })
     setRivers(kenya_rivers);
   }, [setRivers]);
 
   const fetchRoads = useCallback(() => {
+    axiosWithAuth()
+    .get(`${RIVERS_LIST_ENDPONT}`)
+    .then( ({ data }) => {
+      setRoads(data);
+    }).catch((err) => {
+      console.log(err);
+      alert(err.message);
+    })
     setRoads(kenya_roads);
   }, [setRoads]);
 

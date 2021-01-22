@@ -4,49 +4,38 @@ import L from "leaflet";
 import axios from "axios";
 import { OSMTileLayer, RoadLayer, RiverLayer, CountyLayer, LocationMarkers, EditControlComponent } from "./layers";
 import generalIconPng from "../assets/general_icon.svg";
+import greenIcon from "../assets/greenIcon.png";
 import shadowIconPng from "../assets/marker-shadow.png";
 
 // work around broken icons when using webpack, see https://github.com/PaulLeCam/react-leaflet/issues/255
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: generalIconPng,
-  iconUrl: generalIconPng,
-  shadowUrl: shadowIconPng,
-  iconSize: [50, 50],
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
 });
 
-const MARKERS_LIST_API = "http://127.0.0.1:8000/api/v1/markers/";
+const MARKERS_LIST_API = "http://127.0.0.1:8000/api/v1/markers";
 
 const MapView = (props) => {
   const { markers, counties, rivers, roads, pushMessageToSnackbar } = props;
 
   const position = [-1.308889970195843, 36.86084746801358];
-  const [features, setFeatures] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get(`${MARKERS_LIST_API}`)
-      .then((res) => {
-        let data = res.data.features ? res.data.features : [];
-        setFeatures(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  let initialData = JSON.parse(localStorage.getItem("features"));
+  if(!initialData) { 
+    initialData = markers;
+  }
+  const [layerData, setLayerData] = useState(initialData);
 
   const onChange = (data) => {
     console.log("GeoJson data => " + data.features);
-    if (data) {
+    if (data.features) {
       // persist to database
-      axios
-        .post(MARKERS_LIST_API, data)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      localStorage.setItem("features", JSON.stringify(data));
+      console.log("================ Data saved to the dataase ===============");
     }
   };
 
@@ -59,7 +48,7 @@ const MapView = (props) => {
 
         <LayersControl.Overlay name="Location Markers" checked>
         <LayerGroup>
-        <LocationMarkers locations={features} />
+        <LocationMarkers markers={markers} />
         </LayerGroup>
           
         </LayersControl.Overlay>
@@ -75,11 +64,8 @@ const MapView = (props) => {
         <LayersControl.Overlay name="Roads - Kenya">
           <RoadLayer data={roads} />
         </LayersControl.Overlay>
-
-        <LayersControl.Overlay name="Edit Control">
-          <EditControlComponent onChange={onChange} data={features} />
-        </LayersControl.Overlay>
       </LayersControl>
+          <EditControlComponent onChange={onChange} data={layerData} />
     </Map>
   );
 };

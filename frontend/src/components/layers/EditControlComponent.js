@@ -30,7 +30,7 @@ export default class EditControlComponent extends Component {
       }
       // Do whatever else you need to. (save to db; etc)
   
-      this._onChange();
+      //this._onChange();
     }
   
     _onDeleted = (e) => {

@@ -47,10 +47,8 @@ const Profile = (props) => {
     <TableContainer component={Paper}>
     <Table className={classes.table}>
     <TableBody>
-  
       <TableRow >
         <TableCell component="th" scope="row" className={classes.cells}>
-       
         <Box fontWeight="fontWeightBold">
         First Name
         </Box>
@@ -62,7 +60,7 @@ const Profile = (props) => {
             style={{ margin: 8 }}
             fullWidth
             margin="normal"
-            value={`${firstName}`}
+              value={`${firstName? firstName: ''}`}
             InputLabelProps={{
               shrink: true,
             }}
@@ -70,7 +68,6 @@ const Profile = (props) => {
         </form>
         </TableCell>
       </TableRow>
-
           <TableRow>
           <TableCell component="th" scope="row" className={classes.cells}>
           <Box fontWeight="fontWeightBold">
@@ -84,7 +81,7 @@ const Profile = (props) => {
           style={{ margin: 8 }}
           fullWidth
           margin="normal"
-          value={`${lastName}`}
+            value={`${lastName? lastName: ''}`}
           InputLabelProps={{
             shrink: true,
           }}
@@ -92,7 +89,6 @@ const Profile = (props) => {
       </form>
           </TableCell>
         </TableRow>
-
         <TableRow>
         <TableCell component="th" scope="row" className={classes.cells}>
         <Box fontWeight="fontWeightBold">
@@ -113,7 +109,6 @@ const Profile = (props) => {
       /></form>
         </TableCell>
       </TableRow>
-
       <TableRow>
       <TableCell component="th" scope="row" className={classes.cells}>
       <Box fontWeight="fontWeightBold">
@@ -126,7 +121,6 @@ const Profile = (props) => {
     </TableRow>
   </TableBody>
     </Table>
-
     </TableContainer>
   );
 }
