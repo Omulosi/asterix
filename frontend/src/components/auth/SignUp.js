@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  error: {
+    color: "#f15",
+  }
 }));
 
 const validationSchema = yup.object({
@@ -61,6 +64,11 @@ export default function SignUp() {
   const classes = useStyles();
 
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({type: 'CLEAR_ERRORS'});
+  },[dispatch])
+
+  
   const history = useHistory();
   const errors = useSelector((state) => state.user.errors);
 
@@ -88,6 +96,9 @@ export default function SignUp() {
          <Typography component="h1" variant="h5">
            Sign Up
          </Typography>
+         <Typography component="p" textAlign="center" className={classes.error}>
+         {errors && errors.errorMsg}
+       </Typography>
       <form className={classes.form} onSubmit={formik.handleSubmit}>
       <TextField
       fullWidth

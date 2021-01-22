@@ -56,6 +56,7 @@ const Profile = (props) => {
         <TableCell align="left" className={classes.cells}>
         <form className={classes.root} autoComplete="off">
             <TextField
+            disabled 
             id="standard-full-width"
             style={{ margin: 8 }}
             fullWidth
@@ -77,6 +78,7 @@ const Profile = (props) => {
           <TableCell align="right" className={classes.cells}>
           <form className={classes.root} autoComplete="off">
           <TextField
+          disabled 
           id="standard-full-width"
           style={{ margin: 8 }}
           fullWidth
@@ -98,6 +100,7 @@ const Profile = (props) => {
         <TableCell align="right" className={classes.cells}>
         <form>
         <TextField
+        disabled 
         id="standard-full-width"
         style={{ margin: 8 }}
         fullWidth

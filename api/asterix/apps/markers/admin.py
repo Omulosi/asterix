@@ -8,5 +8,3 @@ from asterix.apps.markers.models import Marker
 @admin.register(Marker)
 class MarkerAdmin(admin.OSMGeoAdmin):
     """Marker admin."""
-
-    list_display = ("name", "location")

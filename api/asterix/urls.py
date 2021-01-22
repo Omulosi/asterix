@@ -19,8 +19,9 @@ from django.urls import include, path, re_path
 
 urlpatterns = [
     # Admin
-    re_path(r"^jet/", include("jet.urls", "jet")),
+    #re_path(r"^jet/", include("jet.urls", "jet")),
     path("admin/", admin.site.urls),
+    path('jet_api/', include('jet_django.urls')),
     re_path(r"api/v1/", include("asterix.apps.markers.rest_api.urls")),
     re_path(r"api/v1/", include("asterix.apps.account.urls")),
     re_path(r"api/v1/", include("asterix.apps.shapefiles.rest_api.urls")),

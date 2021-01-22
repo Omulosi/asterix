@@ -28,7 +28,11 @@ def rel(*path):
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("ASTERIX_DEBUG")
 
-ALLOWED_HOSTS = env.list("ASTERIX_ALLOWED_HOSTS", default=[])
+ALLOWED_HOSTS = env.list("ASTERIX_ALLOWED_HOSTS",
+                         default=[
+                             "192.168.60.59",
+                             "127.0.0.1",
+                         ])
 
 SECRET_KEY = env.str("ASTERIX_SECRET_KEY")
 
@@ -36,7 +40,7 @@ SECRET_KEY = env.str("ASTERIX_SECRET_KEY")
 
 INSTALLED_APPS = [
     # django apps
-    "jet",
+    # "jet",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -161,7 +165,8 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny", ),
+    "DEFAULT_PERMISSION_CLASSES":
+    ("rest_framework.permissions.IsAuthenticated", ),
     "DEFAULT_PAGINATION_CLASS":
     "rest_framework.pagination.LimitOffsetPagination",
     "DEFAULT_FILTER_BACKENDS": (

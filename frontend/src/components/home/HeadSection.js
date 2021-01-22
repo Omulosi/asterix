@@ -122,18 +122,11 @@ function HeadSection(props) {
                           variant={isWidthUp("lg", width) ? "h3" : "h4"}
 
                         >
-                          A geo mapping application to help you view and manipulate geographical data
+                          A Geo Mapping Application
                         </Typography>
                       </Box>
                       <div>
                         <Box mb={2} textAlign="center">
-                          <Typography
-                            variant={isWidthUp("lg", width) ? "h6" : "body1"}
-                            color="textSecondary"
-                          >
-                            Lorem ipsum dolor sit amet, consetetur sadipscing
-                            elitr, sed diam nonumy eirmod tempor invidunt
-                          </Typography>
                         </Box>
                         
                       </div>

@@ -14,7 +14,6 @@ import { BASE_URL } from "../../config/index";
 
 export const userLogin = (userData, history) => (dispatch) => {
   dispatch({ type: LOADING });
-  debugger;
   axios
     .post(`${BASE_URL}/auth/login`, {
       email: userData.email,
@@ -32,21 +31,19 @@ export const userLogin = (userData, history) => (dispatch) => {
         if (err.response.data.non_field_errors) {
           errorMsg = err.response.data.non_field_errors[0]
         }
-        else{
-          errorMsg = err.message;
-        }
+      }
+      else {
+        errorMsg = err.message;
       }
       dispatch({
         type: SET_ERRORS,
         payload: { errorMsg },
       });
-      alert(errorMsg);
      
     });
 };
 
 export const userSignUp = (userData, history) => (dispatch) => {
-  debugger;
   dispatch({ type: LOADING });
   axios
     .post(`${BASE_URL}/auth/signup`, {
@@ -61,20 +58,25 @@ export const userSignUp = (userData, history) => (dispatch) => {
       history.push("/c/dashboard");
     })
     .catch((err) => {
-      let errorMsg;
+      let errorMsg= "";
       if (err.response) {
-        if (err.response.data.non_field_errors) {
-          errorMsg = err.response.data.non_field_errors[0]
-        }
-        else{
-          errorMsg = err.message;
+        if (err.response.data) {
+          try {
+            errorMsg = err.response.data.email.pop() || err.response.data.firstName.pop() || err.response.data.lastName.pop() || err.response.data.password.pop() || err.response.data.non_field_errors[0];
+          } catch (err) {
+            errorMsg = "Something went wrong, unable to sign up."
+          }
+         
         }
       }
+      else{
+        errorMsg = err.message;
+      }
+      errorMsg = errorMsg.toLocaleLowerCase();
       dispatch({
         type: SET_ERRORS,
         payload: { errorMsg },
       });
-      alert(errorMsg);
     
     });
 };

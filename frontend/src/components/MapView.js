@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Map, LayersControl, LayerGroup } from "react-leaflet";
 import L from "leaflet";
-import axios from "axios";
+import { axiosWithAuth } from "../utils/axiosAuth";
 import { OSMTileLayer, RoadLayer, RiverLayer, CountyLayer, LocationMarkers, EditControlComponent } from "./layers";
-import generalIconPng from "../assets/general_icon.svg";
-import greenIcon from "../assets/greenIcon.png";
-import shadowIconPng from "../assets/marker-shadow.png";
+
+import { MARKERS_LIST_ENDPOINT } from "../config";
 
 // work around broken icons when using webpack, see https://github.com/PaulLeCam/react-leaflet/issues/255
 delete L.Icon.Default.prototype._getIconUrl;
@@ -18,10 +17,12 @@ L.Icon.Default.mergeOptions({
   shadowSize: [41, 41]
 });
 
-const MARKERS_LIST_API = "http://127.0.0.1:8000/api/v1/markers";
+var _ = require('lodash');
 
 const MapView = (props) => {
-  const { markers, counties, rivers, roads, pushMessageToSnackbar } = props;
+  let { markers, counties, rivers, roads, pushMessageToSnackbar } = props;
+
+
 
   const position = [-1.308889970195843, 36.86084746801358];
   let initialData = JSON.parse(localStorage.getItem("features"));
@@ -34,8 +35,21 @@ const MapView = (props) => {
     console.log("GeoJson data => " + data.features);
     if (data.features) {
       // persist to database
-      localStorage.setItem("features", JSON.stringify(data));
       console.log("================ Data saved to the dataase ===============");
+      axiosWithAuth()
+      .post(`${MARKERS_LIST_ENDPOINT}/`)
+      .then( ({ data }) => {
+        localStorage.setItem("features", JSON.stringify(data));
+        pushMessageToSnackbar({
+          'text': 'Marker has been successfully saved'
+        })
+      }).catch((err) => {
+        console.log(err);
+        pushMessageToSnackbar({
+          'text': 'Marker has been saved!'
+        })
+        localStorage.setItem("features", JSON.stringify(data));
+      })
     }
   };
 
@@ -48,7 +62,10 @@ const MapView = (props) => {
 
         <LayersControl.Overlay name="Location Markers" checked>
         <LayerGroup>
-        <LocationMarkers markers={markers} />
+        {
+          markers?  <LocationMarkers markers={markers} />: null
+        }
+         
         </LayerGroup>
           
         </LayersControl.Overlay>
@@ -65,7 +82,8 @@ const MapView = (props) => {
           <RoadLayer data={roads} />
         </LayersControl.Overlay>
       </LayersControl>
-          <EditControlComponent onChange={onChange} data={layerData} />
+      <EditControlComponent onChange={onChange} data={layerData} setLayerData={setLayerData}/>
+      
     </Map>
   );
 };

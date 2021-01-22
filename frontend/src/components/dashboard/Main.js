@@ -14,10 +14,10 @@ import kenya_markers from "../../dummy_data/markers";
 
 import { 
   PROFILE_ENDPOINT, 
-  MARKERS_LIST_ENDPONT,
-  COUNTIES_LIST_ENDPONT,
-  ROADS_LIST_ENDPONT,
-  RIVERS_LIST_ENDPONT
+  MARKERS_LIST_ENDPOINT,
+  COUNTIES_LIST_ENDPOINT,
+  ROADS_LIST_ENDPOINT,
+  RIVERS_LIST_ENDPOINT
 } from "../../config";
 import { axiosWithAuth } from "../../utils/axiosAuth";
 
@@ -37,11 +37,18 @@ const styles = (theme) => ({
 
 function Main(props) {
   const { classes } = props;
+
+  const defaultGeoJsonData = {
+    "type": "FeatureCollection",
+    "features": [
+    ]
+  }
+
   const [selectedTab, setSelectedTab] = useState(null);
-  const [markers, setMarkers] = useState({});
-  const [counties, setCounties] = useState({});
-  const [rivers, setRivers] = useState({});
-  const [roads, setRoads] = useState({});
+  const [markers, setMarkers] = useState(defaultGeoJsonData);
+  const [counties, setCounties] = useState(defaultGeoJsonData);
+  const [rivers, setRivers] = useState(defaultGeoJsonData);
+  const [roads, setRoads] = useState(defaultGeoJsonData);
   const [pushMessageToSnackbar, setPushMessageToSnackbar] = useState(null);
   const [profileData, setProfileData] = useState({});
 
@@ -49,52 +56,60 @@ function Main(props) {
   // Fetch Data
   const fetchMarkers = useCallback(() => {
       //Axios call to remote API
-    //axiosWithAuth()
-    //.get(`${MARKERS_LIST_ENDPONT}`)
-    //.then( ({ data }) => {
-      //setMarkers(data);
-    //}).catch((err) => {
-      //console.log(err);
-      //alert(err.message);
-    //})
-    setMarkers(kenya_markers);
-  }, [setMarkers]);
+    axiosWithAuth()
+    .get(`${MARKERS_LIST_ENDPOINT}`)
+    .then( ({ data }) => {
+      setMarkers(data);
+    }).catch((err) => {
+      console.log(err);
+      pushMessageToSnackbar({
+        isErrorMessage: true,
+        text: "Error loading markers",
+      });
+    })
+  }, [setMarkers, pushMessageToSnackbar]);
 
   const fetchCounties = useCallback(() => {
     axiosWithAuth()
-    .get(`${COUNTIES_LIST_ENDPONT}`)
+    .get(`${COUNTIES_LIST_ENDPOINT}`)
     .then( ({ data }) => {
       setCounties(data);
     }).catch((err) => {
       console.log(err);
-      alert(err.message);
+      pushMessageToSnackbar({
+        isErrorMessage: true,
+        text: "Error loading counties",
+      });
     })
-    setCounties(kenya_counties);
-  }, [setCounties]);
+  }, [setCounties, pushMessageToSnackbar]);
 
   const fetchRivers = useCallback(() => {
     axiosWithAuth()
-    .get(`${RIVERS_LIST_ENDPONT}`)
+    .get(`${RIVERS_LIST_ENDPOINT}`)
     .then( ({ data }) => {
       setRivers(data);
     }).catch((err) => {
       console.log(err);
-      alert(err.message);
+      pushMessageToSnackbar({
+        isErrorMessage: true,
+        text: "Error loading rivers",
+      });
     })
-    setRivers(kenya_rivers);
-  }, [setRivers]);
+  }, [setRivers, pushMessageToSnackbar]);
 
   const fetchRoads = useCallback(() => {
     axiosWithAuth()
-    .get(`${RIVERS_LIST_ENDPONT}`)
+    .get(`${ROADS_LIST_ENDPOINT}`)
     .then( ({ data }) => {
       setRoads(data);
     }).catch((err) => {
       console.log(err);
-      alert(err.message);
+      pushMessageToSnackbar({
+        isErrorMessage: true,
+        text: "Error loading roads",
+      });
     })
-    setRoads(kenya_roads);
-  }, [setRoads]);
+  }, [setRoads, pushMessageToSnackbar]);
 
   const fetchProfileData = useCallback(() => {
     axiosWithAuth()
@@ -103,9 +118,12 @@ function Main(props) {
       setProfileData(data);
     }).catch((err) => {
       console.log(err);
-      alert(err.message);
+      pushMessageToSnackbar({
+        isErrorMessage: true,
+        text: "Error fetching user profile",
+      });
     })
-  }, [setProfileData])
+  }, [setProfileData, pushMessageToSnackbar])
 
   const selectDashboard = useCallback(() => {
     smoothScrollTop();
@@ -143,13 +161,7 @@ function Main(props) {
     fetchRivers();
     fetchRoads();
     fetchProfileData();
-  }, [
-    fetchCounties,
-    fetchMarkers,
-    fetchRivers,
-    fetchRoads,
-    fetchProfileData
-  ]);
+  }, []);
 
   return (
     <Fragment>

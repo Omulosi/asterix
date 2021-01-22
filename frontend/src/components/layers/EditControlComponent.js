@@ -3,6 +3,8 @@ import { FeatureGroup } from 'react-leaflet';
 import { EditControl } from "react-leaflet-draw";
 import L from 'leaflet';
 
+var _ = require('lodash');
+
 export default class EditControlComponent extends Component {
 
     // see http://leaflet.github.io/Leaflet.draw/docs/leaflet-draw-latest.html#l-draw-event for leaflet-draw events doc
@@ -15,7 +17,7 @@ export default class EditControlComponent extends Component {
       });
       console.log(`_onEdited: edited ${numEdited} layers`, e);
   
-      this._onChange();
+      //this._onChange();
     }
   
     _onCreated = (e) => {
@@ -28,9 +30,8 @@ export default class EditControlComponent extends Component {
       else {
         console.log("_onCreated: something else created:", type, e);
       }
-      // Do whatever else you need to. (save to db; etc)
   
-      //this._onChange();
+      this._onChange();
     }
   
     _onDeleted = (e) => {
@@ -84,13 +85,23 @@ export default class EditControlComponent extends Component {
     }
   
     _editableFG = null
+
+    defaultData = {
+      "type": "FeatureCollection",
+      "features": [
+      ]
+    }
   
     _onFeatureGroupReady = (reactFGref) => {
 
-      const { data } = this.props;
+      let { data } = this.props;
   
       // populate the leaflet FeatureGroup with the geoJson layers
-  
+
+      if (_.isEmpty(data)) {
+        data = this.defaultData;
+      }
+    
       let leafletGeoJSON = new L.GeoJSON(data);
       
       try {
@@ -103,10 +114,10 @@ export default class EditControlComponent extends Component {
         console.log(err);
       }
 
-  
       // store the ref for future access to content
   
       this._editableFG = reactFGref;
+
     }
   
     _onChange = () => {
