@@ -1,0 +1,12 @@
+# pull official base image
+FROM node:lts
+
+# set working directory
+WORKDIR /frontend
+
+COPY frontend/ /frontend/
+
+RUN ["npm", "install"]
+
+# start app
+CMD ["npm", "start"]

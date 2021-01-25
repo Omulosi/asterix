@@ -32,6 +32,7 @@ ALLOWED_HOSTS = env.list("ASTERIX_ALLOWED_HOSTS",
                          default=[
                              "192.168.60.59",
                              "127.0.0.1",
+                             "0.0.0.0",
                          ])
 
 SECRET_KEY = env.str("ASTERIX_SECRET_KEY")

@@ -9,11 +9,13 @@ import SignUp from "../auth/SignUp";
 function Routing(props) {
   const { selectHome } = props;
   return (
-    <Switch>
-      <PropsRoute exact path="/" component={Home} selectHome={selectHome} />
-      <PropsRoute path="/login" component={SignIn}  />
-      <PropsRoute path="/register" component={SignUp} />
-    </Switch>
+    <div style={{flex: "1 1 0", display: "flex", flexDirection:"column"}}>
+      <Switch>
+        <PropsRoute exact path="/" component={Home} selectHome={selectHome} />
+        <PropsRoute path="/login" component={SignIn}  />
+        <PropsRoute path="/register" component={SignUp} />
+      </Switch>
+    </div>
   );
 }
 

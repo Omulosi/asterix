@@ -62,12 +62,8 @@ function Main(props) {
       setMarkers(data);
     }).catch((err) => {
       console.log(err);
-      pushMessageToSnackbar({
-        isErrorMessage: true,
-        text: "Error loading markers",
-      });
     })
-  }, [setMarkers, pushMessageToSnackbar]);
+  }, [setMarkers]);
 
   const fetchCounties = useCallback(() => {
     axiosWithAuth()
@@ -76,12 +72,9 @@ function Main(props) {
       setCounties(data);
     }).catch((err) => {
       console.log(err);
-      pushMessageToSnackbar({
-        isErrorMessage: true,
-        text: "Error loading counties",
-      });
     })
-  }, [setCounties, pushMessageToSnackbar]);
+    setCounties(kenya_counties);
+  }, [setCounties]);
 
   const fetchRivers = useCallback(() => {
     axiosWithAuth()
@@ -90,12 +83,9 @@ function Main(props) {
       setRivers(data);
     }).catch((err) => {
       console.log(err);
-      pushMessageToSnackbar({
-        isErrorMessage: true,
-        text: "Error loading rivers",
-      });
     })
-  }, [setRivers, pushMessageToSnackbar]);
+    setRivers(kenya_rivers);
+  }, [setRivers]);
 
   const fetchRoads = useCallback(() => {
     axiosWithAuth()
@@ -104,12 +94,9 @@ function Main(props) {
       setRoads(data);
     }).catch((err) => {
       console.log(err);
-      pushMessageToSnackbar({
-        isErrorMessage: true,
-        text: "Error loading roads",
-      });
     })
-  }, [setRoads, pushMessageToSnackbar]);
+    setRoads(kenya_roads);
+  }, [setRoads]);
 
   const fetchProfileData = useCallback(() => {
     axiosWithAuth()
@@ -118,12 +105,8 @@ function Main(props) {
       setProfileData(data);
     }).catch((err) => {
       console.log(err);
-      pushMessageToSnackbar({
-        isErrorMessage: true,
-        text: "Error fetching user profile",
-      });
     })
-  }, [setProfileData, pushMessageToSnackbar])
+  }, [setProfileData])
 
   const selectDashboard = useCallback(() => {
     smoothScrollTop();

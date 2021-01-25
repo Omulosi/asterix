@@ -21,8 +21,8 @@ const App = () => {
         <Pace color={theme.palette.primary.light} />
         <Suspense fallback={<Fragment />}>
           <Switch>
-            <PrivateRoute path="/c/*">
-            <LoggedInComponent />
+            <PrivateRoute path="/c">
+              <LoggedInComponent />
             </PrivateRoute>
             <Route>
               <LoggedOutComponent />

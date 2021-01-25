@@ -66,6 +66,9 @@ const styles = (theme) => ({
     position: "relative",
     backgroundColor: theme.palette.secondary.main,
     paddingBottom: theme.spacing(2),
+    flex: "1 1 0",
+    justifyContent: "center",
+    
   },
   image: {
     maxWidth: "100%",
@@ -125,29 +128,15 @@ function HeadSection(props) {
                           A Geo Mapping Application
                         </Typography>
                       </Box>
-                      <div>
-                        <Box mb={2} textAlign="center">
-                        </Box>
-                        
-                      </div>
                     </Box>
                   </Grid>
-                  <Hidden smDown>
-                    <Grid item md={6}>
-                    </Grid>
-                  </Hidden>
                 </Box>
               </div>
             </Card>
           </Box>
         </div>
       </div>
-      <WaveBorder
-        upperColor={theme.palette.secondary.main}
-        lowerColor="#FFFFFF"
-        className={classes.waveBorder}
-        animationNegativeDelay={2}
-      />
+      
     </Fragment>
   );
 }

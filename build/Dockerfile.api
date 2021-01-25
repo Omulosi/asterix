@@ -2,13 +2,24 @@ FROM python:latest
 
 WORKDIR /api
 
+RUN apt-get update
+RUN apt-get install -y software-properties-common && apt-get update
+RUN apt-get install -y python3.7-dev
+RUN apt-get install -y gdal-bin libgdal-dev && apt-get update
+RUN apt-get install binutils libproj-dev && apt-get update
+RUN apt-get install -y python3-gdal && apt-get update
+ARG CPLUS_INCLUDE_PATH=/usr/include/gdal
+ARG C_INCLUDE_PATH=/usr/include/gdal
+
+ENV ASTERIX_DATABASE_URL=postgis://asterix:asterix@db:5432/asterix
+
 COPY api/ /api/
 COPY build/docker-entrypoint-api.sh /api/
 
-RUN ["chmod", "+x", "/api/docker-entrypoint-api.sh"]
+#ENTRYPOINT ["/api/docker-entrypoint-api.sh"]
 RUN ["pip", "install", "-r", "requirements/dev.txt"]
-
-ENTRYPOINT ["/api/docker-entrypoint-api.sh"]
+#RUN ["python", "manage.py", "makemigrations"]
+CMD ["python", "manage.py", "migrate"]
 
 EXPOSE 8000
 

@@ -1,6 +1,6 @@
 //export const baseUrl = process.env.REACT_APP_API_HOST;
-//export const BASE_URL = "http://127.0.0.1:8000/api/v1";
-export const BASE_URL = "http://192.168.60.59:8000/api/v1";
+export const BASE_URL = "http://0.0.0.0:8000/api/v1";
+//export const BASE_URL = "http://192.168.60.59:8000/api/v1";
 
 export const PROFILE_ENDPOINT = `${BASE_URL}/me`;
 

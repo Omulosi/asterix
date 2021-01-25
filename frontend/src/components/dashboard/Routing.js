@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import PropTypes from "prop-types";
-import { Switch } from "react-router-dom";
+import { Switch, useRouteMatch } from "react-router-dom";
 import { withStyles } from "@material-ui/core";
 import Dashboard from "./Dashboard";
 import Profile from "./Profile";
@@ -57,24 +57,27 @@ function Routing(props) {
     roads,
     profileData
   } = props;
+
+  let {path} = useRouteMatch();
+
   return (
     <div className={classes.wrapper}>
       <Switch>
         <PropsRoute
-          path="/c/profile"
+          path={`${path}/profile`}
           component={Profile}
           pushMessageToSnackbar={pushMessageToSnackbar}
           selectProfile={selectProfile}
           profileData={profileData}
         />
         <PropsRoute
-          path="/c/settings"
+          path={`${path}/settings`}
           component={Settings}
           pushMessageToSnackbar={pushMessageToSnackbar}
           selectSettings={selectSettings}
         />
         <PropsRoute
-          path="/c/dashboard"
+          path={`${path}/dashboard`}
           component={Dashboard}
           pushMessageToSnackbar={pushMessageToSnackbar}
           selectDashboard={selectDashboard}

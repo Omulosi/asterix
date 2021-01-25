@@ -142,12 +142,7 @@ const socialIcons = [
 function Footer(props) {
   const { classes, theme, width } = props;
   return (
-    <footer className="lg-p-top">
-      <WaveBorder
-        upperColor="#FFFFFF"
-        lowerColor={theme.palette.common.darkBlack}
-        animationNegativeDelay={4}
-      />
+    <footer>
       <div className={classes.footerInner}>
         <Grid container spacing={isWidthUp("md", width) ? 10 : 5}>
           <Grid item xs={12} md={6} lg={4}>
@@ -188,8 +183,7 @@ function Footer(props) {
               About Asterix
             </Typography>
             <Typography style={{ color: "#8f9296" }} paragraph>
-              Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce
-              euismod convallis velit, eu auctor lacus vehicula sit amet.
+              A web application that enables you to visualize and manipulate maps.
             </Typography>
             <Box display="flex">
               {socialIcons.map((socialIcon, index) => (
