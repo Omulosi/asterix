@@ -11,15 +11,15 @@ RUN apt-get install -y python3-gdal && apt-get update
 ARG CPLUS_INCLUDE_PATH=/usr/include/gdal
 ARG C_INCLUDE_PATH=/usr/include/gdal
 
-ENV ASTERIX_DATABASE_URL=postgis://asterix:asterix@db:5432/asterix
+ENV ASTERIX_DATABASE_URL=postgis://asterix:asterix@postgis:5432/asterix
 
 COPY api/ /api/
 COPY build/docker-entrypoint-api.sh /api/
 
-#ENTRYPOINT ["/api/docker-entrypoint-api.sh"]
+RUN ["chmod", "+x", "/api/docker-entrypoint-api.sh"]
 RUN ["pip", "install", "-r", "requirements/dev.txt"]
-#RUN ["python", "manage.py", "makemigrations"]
-CMD ["python", "manage.py", "migrate"]
+
+ENTRYPOINT ["/api/docker-entrypoint-api.sh"]
 
 EXPOSE 8000
 

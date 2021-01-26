@@ -1,7 +1,18 @@
 version: "3"
 
 services:
-  db:
+  api_asterix:
+    build:
+      context: ..
+      dockerfile: build/Dockerfile.api
+    depends_on:
+      - postgis
+    environment:
+      - ASTERIX_DATABASE_URL=postgis://asterix:asterix@postgis:5432/asterix
+    ports:
+      - "8000:8000"
+
+  postgis:
     image: kartoza/postgis
     volumes:
       - "asterix-pgdata:/var/lib/postgis/data"
@@ -11,21 +22,13 @@ services:
       - POSTGRES_PASSWORD=asterix
     ports:
       - "5432:5432"
-  api_asterix:
-    build:
-      context: ..
-      dockerfile: build/Dockerfile.api
-    depends_on:
-      - db
-    environment:
-      - ASTERIX_DATABASE_URL=postgis://asterix:asterix@db:5432/asterix
-    ports:
-      - "8000:8000"
+
   frontend:
     build:
       context: ..
       dockerfile: build/Dockerfile.frontend
     ports:
       - "3000:3000"
+
 volumes:
   asterix-pgdata:

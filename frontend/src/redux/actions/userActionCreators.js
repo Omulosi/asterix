@@ -35,6 +35,7 @@ export const userLogin = (userData, history) => (dispatch) => {
       else {
         errorMsg = err.message;
       }
+      errorMsg = errorMsg || "Error logging in";
       dispatch({
         type: SET_ERRORS,
         payload: { errorMsg },
@@ -72,7 +73,7 @@ export const userSignUp = (userData, history) => (dispatch) => {
       else{
         errorMsg = err.message;
       }
-      errorMsg = errorMsg.toLocaleLowerCase();
+      errorMsg = errorMsg || "Error signing up";
       dispatch({
         type: SET_ERRORS,
         payload: { errorMsg },

@@ -9,13 +9,11 @@ import {
   withStyles,
   withWidth,
   isWidthUp,
-  TextField
 } from "@material-ui/core";
 import PhoneIcon from "@material-ui/icons/Phone";
 import MailIcon from "@material-ui/icons/Mail";
-import WaveBorder from "./WaveBorder";
 import transitions from "@material-ui/core/styles/transitions";
-import ColoredButton from "./ColoredButton";
+
 import Copyright from "./Copyright";
 
 const styles = theme => ({
@@ -146,58 +144,13 @@ function Footer(props) {
       <div className={classes.footerInner}>
         <Grid container spacing={isWidthUp("md", width) ? 10 : 5}>
           <Grid item xs={12} md={6} lg={4}>
-            <Copyright footer={true}/>
           </Grid>
-          <Hidden mdDown>
+          
             <Grid item xs={12} md={6} lg={4}>
-              <Box display="flex" justifyContent="center">
-                <div>
-                  {infos.map((info, index) => (
-                    <Box display="flex" mb={1} key={index}>
-                      <Box mr={2}>
-                        <IconButton
-                          className={classes.infoIcon}
-                          tabIndex={-1}
-                          disabled
-                        >
-                          {info.icon}
-                        </IconButton>
-                      </Box>
-                      <Box
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="center"
-                      >
-                        <Typography variant="h6" className="text-white">
-                          {info.description}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  ))}
-                </div>
-              </Box>
+            <Copyright footer={true}/>
             </Grid>
-          </Hidden>
+          
           <Grid item xs={12} md={6} lg={4}>
-            <Typography variant="h6" paragraph className="text-white">
-              About Asterix
-            </Typography>
-            <Typography style={{ color: "#8f9296" }} paragraph>
-              A web application that enables you to visualize and manipulate maps.
-            </Typography>
-            <Box display="flex">
-              {socialIcons.map((socialIcon, index) => (
-                <Box key={index} mr={index !== socialIcons.length - 1 ? 1 : 0}>
-                  <IconButton
-                    aria-label={socialIcon.label}
-                    className={classes.socialIcon}
-                    href={socialIcon.href}
-                  >
-                    {socialIcon.icon}
-                  </IconButton>
-                </Box>
-              ))}
-            </Box>
           </Grid>
         </Grid>
       </div>

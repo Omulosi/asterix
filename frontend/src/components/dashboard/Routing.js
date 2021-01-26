@@ -65,6 +65,7 @@ function Routing(props) {
       <Switch>
         <PropsRoute
           path={`${path}/profile`}
+          exact
           component={Profile}
           pushMessageToSnackbar={pushMessageToSnackbar}
           selectProfile={selectProfile}
@@ -72,12 +73,14 @@ function Routing(props) {
         />
         <PropsRoute
           path={`${path}/settings`}
+          exact
           component={Settings}
           pushMessageToSnackbar={pushMessageToSnackbar}
           selectSettings={selectSettings}
         />
         <PropsRoute
           path={`${path}/dashboard`}
+          exact
           component={Dashboard}
           pushMessageToSnackbar={pushMessageToSnackbar}
           selectDashboard={selectDashboard}

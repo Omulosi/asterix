@@ -115,7 +115,7 @@ const Profile = (props) => {
       <TableRow>
       <TableCell component="th" scope="row" className={classes.cells}>
       <Box fontWeight="fontWeightBold">
-        Admin Status
+        Status
         </Box>
       </TableCell>
       <TableCell align="left" className={classes.cells}>
